@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+*.log
+
+# Notas internas de trabajo. Se quedan en el ordenador, nunca en el repositorio,
+# que es público. Aquí va el estado de las causas, los pendientes y el contexto
+# del proyecto.
+CLAUDE.md
+notas-internas/

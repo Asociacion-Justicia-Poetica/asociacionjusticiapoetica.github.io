@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hazte Poeta Guerrero | Asociación Justicia Poética</title>
+<meta name="description" content="Desde 10 euros al mes sostienes la defensa legal de mujeres y menores víctimas de delitos sexuales. Carnet con código QR, ventajas y un informe trimestral con el estado real de cada causa.">
+<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/img/favicon-192.png">
+<link rel="preload" href="assets/fonts/outfit-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/public-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<meta property="og:title" content="Hazte Poeta Guerrero">
+<meta property="og:description" content="Desde 10 euros al mes sostienes la defensa legal de mujeres y menores víctimas de delitos sexuales.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+</head>
+<body>
+<a class="skip-link" href="#contenido">Ir al contenido</a>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <a class="brand" href="index.html">
+      <img src="assets/img/logo-justicia-poetica.png" alt="Asociación Justicia Poética" width="359" height="130">
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Principal">
+      <a href="necesito-ayuda.html">Necesito ayuda</a>
+      <a href="la-asociacion.html">La Asociación</a>
+      <a href="causas.html">Causas</a>
+      <a href="transparencia.html">Transparencia</a>
+      <a href="contacto.html">Contacto</a>
+      <a class="btn btn-primary" href="poetas-guerreros.html" aria-current="page">Hazte Poeta Guerrero</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Diez euros al mes <span class="hero-mark">pagan un abogado</span>.</h1>
+        <p class="lede">Somos una asociación sin subvenciones. Lo que hacemos lo paga gente que aporta todos los meses.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="#alta">Hazte Poeta Guerrero</a>
+          <a class="btn btn-secondary btn-lg" href="#a-donde-va">¿A dónde va el dinero?</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <h2>Por qué ahora</h2>
+        <p>El número de donantes ha bajado. Personarse como acusación popular en una causa de menores exige constituir fianza, y esa fianza sale de aquí.</p>
+        <p style="margin-bottom:0">No nos faltan casos. Nos falta músculo para asumirlos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tight" style="background:var(--surface);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <h2>Las tres formas de estar dentro</h2>
+      <p class="muted" style="margin-bottom:2rem">Todas son mensuales y todas se pueden cancelar cuando quieras.</p>
+
+      <div class="tiers">
+        <div class="tier">
+          <span class="per">Grupo Teaming</span>
+          <span class="amount">1 €</span>
+          <span class="per">al mes</span>
+          <ul>
+            <li>La puerta de entrada si ahora mismo no puedes más.</li>
+            <li>Se gestiona en la plataforma Teaming.</li>
+            <li>Una cantidad ridícula para ti. Sumada a la de muchos, no.</li>
+          </ul>
+          <a class="btn btn-secondary" href="https://www.teaming.net/justiciapoetica" rel="noopener">Ir a Teaming</a>
+        </div>
+
+        <div class="tier">
+          <span class="per">Poeta de la Justicia</span>
+          <span class="amount">2 €</span>
+          <span class="per">al mes</span>
+          <ul>
+            <li>Carnet con código QR acreditativo.</li>
+            <li>Ventajas y descuentos entre nuestros colaboradores.</li>
+            <li>Informe trimestral del estado de las causas.</li>
+          </ul>
+          <!-- PENDIENTE: sustituir por el Payment Link real de Stripe (2 €/mes). -->
+          <a class="btn btn-secondary" href="https://buy.stripe.com/PENDIENTE-poeta-justicia">Aportar 2 € al mes</a>
+        </div>
+
+        <div class="tier tier-featured">
+          <span class="tier-flag">El que más falta hace</span>
+          <span class="per" style="margin-top:.75rem">Poeta Guerrero</span>
+          <span class="amount">10 €</span>
+          <span class="per">al mes o más</span>
+          <ul>
+            <li>Todo lo anterior.</li>
+            <li>10 % de descuento en los ocho restaurantes del Grupo Pulcinella en Madrid.</li>
+            <li>50 % de descuento en consulta jurídica a partir de seis meses de antigüedad.</li>
+            <li>Certificado de donaciones si lo pides.</li>
+          </ul>
+          <a class="btn btn-primary" href="#alta">Hazte Poeta Guerrero</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="alta">
+    <div class="wrap wrap-narrow">
+      <h2>Hazte Poeta Guerrero</h2>
+      <p class="muted">Elige tu aportación mensual. El pago lo gestiona Stripe en su propia pasarela segura, donde introducirás tus datos. La Asociación no ve ni guarda tu número de tarjeta.</p>
+
+      <!-- ==========================================================
+           PENDIENTE ANTES DE PUBLICAR:
+           Cada opción apunta a un Payment Link recurrente de Stripe que
+           todavía hay que crear en la cuenta de la Asociación.
+           Ver README.md, apartado "Alta de Poetas con Stripe".
+           El formulario funciona sin JavaScript: si no carga, el usuario
+           ve los enlaces directos del bloque noscript.
+           ========================================================== -->
+      <form class="form" id="form-alta" data-validate method="get" action="https://buy.stripe.com/PENDIENTE-poeta-guerrero-10" style="margin-top:2rem">
+        <p class="form-error" role="alert" aria-live="assertive"></p>
+
+        <fieldset>
+          <legend>Tu aportación mensual</legend>
+          <div class="amounts" style="margin-top:1rem">
+            <label class="amount-option">
+              <input type="radio" name="importe" value="10" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-10" checked required>
+              <span>10 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe" value="15" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-15">
+              <span>15 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe" value="25" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-25">
+              <span>25 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe" value="50" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-50">
+              <span>50 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe" value="otro" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-libre">
+              <span>Otro</span>
+            </label>
+          </div>
+          <p class="help" style="margin-top:.75rem">A partir de 10 euros al mes eres Poeta Guerrero. Por debajo de esa cantidad, Poeta de la Justicia.</p>
+
+          <div class="field" style="margin-top:1.25rem" hidden>
+            <label for="importe-libre">Cantidad que quieres aportar cada mes</label>
+            <input type="number" id="importe-libre" name="importe_libre" min="2" step="1" inputmode="numeric">
+            <p class="help">En euros. Podrás confirmarla en el paso siguiente.</p>
+          </div>
+        </fieldset>
+
+        <div class="form-note">
+          <p><strong>En el paso siguiente, en la pasarela de Stripe,</strong> introducirás tu nombre, tu correo y la forma de pago. Puedes pagar con tarjeta o domiciliar el recibo en tu cuenta.</p>
+          <p style="margin-bottom:0">Si quieres el certificado de donaciones para la declaración de la renta, añade tu NIF cuando Stripe te lo pida.</p>
+        </div>
+
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Continuar al pago seguro</button>
+        <p class="small muted" style="text-align:center">Puedes darte de baja cuando quieras escribiendo a info@justiciapoetica.org. Sin explicaciones y sin preguntas.</p>
+      </form>
+
+      <noscript>
+        <div class="form-note" style="margin-top:1.5rem">
+          <p><strong>Elige tu aportación mensual:</strong></p>
+          <p style="margin-bottom:0">
+            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-10">10 euros</a> ·
+            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-15">15 euros</a> ·
+            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-25">25 euros</a> ·
+            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-50">50 euros</a> ·
+            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-libre">otra cantidad</a>
+          </p>
+        </div>
+      </noscript>
+    </div>
+  </section>
+
+  <section id="a-donde-va" class="deep">
+    <div class="wrap">
+      <h2>A dónde va tu dinero</h2>
+      <p style="max-width:60ch;margin-bottom:2.5rem">No hay sueldos que financiar ni oficinas que mantener. Hay procedimientos judiciales que sostener durante años.</p>
+      <div class="figures">
+        <div class="figure">
+          <span class="n">Fianzas</span>
+          <p>Ejercer la acusación popular en una causa de corrupción o de menores exige constituir fianza. Sin ella no entramos.</p>
+        </div>
+        <div class="figure">
+          <span class="n">Peritos</span>
+          <p>Informes forenses y periciales de parte, que en estos delitos suelen decidir el resultado del juicio.</p>
+        </div>
+        <div class="figure">
+          <span class="n">Procuradores</span>
+          <p>Representación procesal en juzgados de toda España, de San Sebastián a Palma de Mallorca.</p>
+        </div>
+        <div class="figure">
+          <span class="n">Años</span>
+          <p>El caso fundacional duró diez años hasta la sentencia firme del Tribunal Supremo. Aguantar ese tiempo cuesta dinero.</p>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:2.5rem">
+        <a class="btn btn-on-deep" href="transparencia.html">Ver cuentas y memorias</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--surface);border-block:1px solid var(--line)">
+    <div class="wrap split">
+      <div>
+        <h2>El carnet y sus ventajas</h2>
+        <p>Todos los Poetas reciben un carnet con código QR. Enseñándolo en cualquiera de los ocho restaurantes del Grupo Pulcinella en Madrid obtienes un 10 % de descuento en la cuenta, para mesas de hasta nueve personas.</p>
+        <p>Además, el Grupo Pulcinella dona un euro a la Asociación por cada postre solidario que sirve. Solo en el último trimestre del que tenemos datos fueron 1.298 postres.</p>
+        <p>Los Poetas Guerreros con al menos seis meses de antigüedad tienen un 50 % de descuento en consulta jurídica.</p>
+      </div>
+      <!-- PENDIENTE: imagen real del carnet QR, 1200x900. -->
+      <div class="img-slot"><span>Espacio reservado para la imagen del carnet con código QR</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap wrap-narrow">
+      <h2>Preguntas sobre la aportación</h2>
+      <div class="faq">
+        <details>
+          <summary>¿Puedo desgravarme la aportación?</summary>
+          <p>Las donaciones a asociaciones dan derecho a deducción en el IRPF. Para poder emitir tu certificado necesitamos tu NIF, que puedes indicar durante el proceso de pago. La Asociación tiene solicitada la declaración de utilidad pública, que mejoraría los porcentajes de deducción; cuando se resuelva lo publicaremos aquí.</p>
+        </details>
+        <details>
+          <summary>¿Cómo me doy de baja?</summary>
+          <p>Escribiendo a info@justiciapoetica.org o llamando al 608 14 16 25. La cancelamos ese mismo día. No te vamos a llamar para convencerte de lo contrario.</p>
+        </details>
+        <details>
+          <summary>Ya aportaba antes por la web antigua. ¿Tengo que hacer algo?</summary>
+          <p>Estamos migrando los cobros a Stripe. Si tu aportación venía de la web anterior, te avisaremos por correo antes de cambiar nada. No vamos a cobrarte dos veces.</p>
+        </details>
+        <details>
+          <summary>¿Ser Poeta es lo mismo que ser socio de la Asociación?</summary>
+          <p>No exactamente. Los Poetas sostienen económicamente la actividad. La condición de socio, con derecho de voto en la Asamblea General, se adquiere solicitándolo y con la aceptación de la Junta Directiva, según el artículo 31 de los estatutos. Si quieres ser socio, escríbenos y te explicamos.</p>
+        </details>
+        <details>
+          <summary>¿Qué pasa si un mes no puedo pagar?</summary>
+          <p>No pasa nada. Nos escribes y la pausamos. Esto no es una suscripción de la que haya que escapar.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <img src="assets/img/logo-justicia-poetica.png" alt="Asociación Justicia Poética" width="359" height="130">
+        <p style="font-size:.95rem">Entidad sin ánimo de lucro inscrita en el Registro Nacional de Asociaciones, grupo 1, sección 1, número 616585.</p>
+        <p style="font-size:.95rem">CIF G74447921<br>C/ Fernández de Oviedo 28, 2ºB<br>33012 Oviedo, Asturias</p>
+      </div>
+      <div>
+        <h2>Ayuda</h2>
+        <ul>
+          <li><a href="necesito-ayuda.html">Pedir ayuda</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="causas.html">Nuestras causas</a></li>
+          <li><a href="tel:+34608141625">608 14 16 25</a></li>
+          <li><a href="mailto:info@justiciapoetica.org">info@justiciapoetica.org</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Colaborar</h2>
+        <ul>
+          <li><a href="poetas-guerreros.html">Hazte Poeta Guerrero</a></li>
+          <li><a href="transparencia.html">Transparencia</a></li>
+          <li><a href="la-asociacion.html">La Asociación</a></li>
+          <li><a href="https://www.teaming.net/justiciapoetica" rel="noopener">Grupo Teaming</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>© 2026 Asociación Justicia Poética</span>
+      <span>
+        <a href="aviso-legal.html">Aviso legal</a> ·
+        <a href="privacidad.html">Privacidad</a> ·
+        <a href="cookies.html">Cookies</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js" defer></script>
+<script>
+/* Envía al Payment Link que corresponde al importe elegido. */
+(function () {
+  var form = document.getElementById('form-alta');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    var chosen = form.querySelector('input[name="importe"]:checked');
+    if (!chosen) return;
+    e.preventDefault();
+    window.location.href = chosen.getAttribute('data-url');
+  });
+})();
+</script>
+</body>
+</html>
