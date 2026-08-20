@@ -1,0 +1,10 @@
+{
+  "name": "web-justicia-poetica",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Web de la Asociación Justicia Poética",
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}

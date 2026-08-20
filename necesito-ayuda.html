@@ -93,18 +93,19 @@
       <h2>Escríbenos</h2>
       <p class="muted">Solo te pedimos lo imprescindible para poder llamarte. Los campos marcados con <span class="req">*</span> son obligatorios.</p>
 
-      <!-- ==========================================================
-           IMPORTANTE, PENDIENTE ANTES DE PUBLICAR:
-           El atributo action apunta a un destino que todavía no existe.
-           Este formulario recoge datos de categoría especial del RGPD
-           (salud, vida sexual, infracciones penales), así que el destino
-           debe estar alojado en la Unión Europea y cifrar el contenido.
-           Ver README.md, apartado "Formulario de solicitud de ayuda".
-           Mientras tanto, los canales que sí funcionan son el teléfono,
-           el WhatsApp y el correo que aparecen debajo.
-           ========================================================== -->
-      <form class="form" data-validate method="post" action="https://ENDPOINT-PENDIENTE.justiciapoetica.org/solicitud-ayuda" style="margin-top:2rem">
+      <!-- El destino es la función en api/solicitud-ayuda.js, que se ejecuta
+           en Fráncfort y solo convierte el formulario en un correo. No guarda
+           nada ni escribe el contenido en los registros: son datos de
+           categoría especial del RGPD. -->
+      <form class="form" data-validate method="post" action="/api/solicitud-ayuda" style="margin-top:2rem">
         <p class="form-error" role="alert" aria-live="assertive"></p>
+
+        <!-- Trampa para robots. Invisible y fuera del recorrido del teclado y
+             de los lectores de pantalla: una persona nunca lo rellena. -->
+        <div hidden aria-hidden="true">
+          <label for="web">No rellenes este campo</label>
+          <input type="text" id="web" name="web" tabindex="-1" autocomplete="off">
+        </div>
 
         <fieldset>
           <legend>Cómo prefieres que te contactemos</legend>
@@ -225,7 +226,7 @@
       <div class="docs" style="margin-top:1.5rem">
         <a class="doc" href="tel:+34608141625">608 14 16 25 <em>Teléfono</em></a>
         <a class="doc" href="https://wa.me/34608141625" rel="noopener">608 14 16 25 <em>WhatsApp</em></a>
-        <a class="doc" href="mailto:info@justiciapoetica.org">info@justiciapoetica.org <em>Correo</em></a>
+        <a class="doc" href="mailto:asociacionjusticiapoetica@gmail.com">asociacionjusticiapoetica@gmail.com <em>Correo</em></a>
       </div>
     </div>
   </section>
@@ -275,7 +276,7 @@
           <li><a href="contacto.html">Contacto</a></li>
           <li><a href="causas.html">Nuestras causas</a></li>
           <li><a href="tel:+34608141625">608 14 16 25</a></li>
-          <li><a href="mailto:info@justiciapoetica.org">info@justiciapoetica.org</a></li>
+          <li><a href="mailto:asociacionjusticiapoetica@gmail.com">asociacionjusticiapoetica@gmail.com</a></li>
         </ul>
       </div>
       <div>

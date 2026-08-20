@@ -552,6 +552,34 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 .timeline .when { display: block; font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; color: var(--accent-ink); font-size: .95rem; }
 .timeline p { margin: .25rem 0 0; font-size: .98rem; }
 
+/* --- Retrato ------------------------------------------------------------ */
+.retrato { display: grid; gap: clamp(1.5rem, 1rem + 2vw, 2.5rem); align-items: center; }
+@media (min-width: 800px) { .retrato { grid-template-columns: minmax(0, 300px) 1fr; } }
+
+.retrato figure { margin: 0; }
+.retrato img {
+  width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center top;
+  border-radius: var(--r-card); background: var(--surface-sunken);
+}
+.retrato .img-slot { aspect-ratio: 4 / 5; }
+.retrato figcaption {
+  margin-top: .85rem; font-size: .92rem; color: var(--ink-soft);
+  padding-left: .9rem; border-left: 2px solid var(--gold);
+}
+.deep .retrato figcaption { color: var(--deep-soft); }
+
+.retrato-cargo {
+  display: block; font-size: .88rem; font-weight: 600; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--accent-ink); margin-bottom: .5rem;
+}
+.deep .retrato-cargo { color: var(--gold); }
+
+.firma {
+  margin-top: 1.5rem; font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.25rem; font-style: italic; color: var(--ink);
+}
+.deep .firma { color: var(--deep-ink); }
+
 /* --- Marcadores de imagen pendiente ------------------------------------- */
 .img-slot {
   display: grid; place-items: center; text-align: center;
@@ -565,10 +593,15 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 /* --- Documentos --------------------------------------------------------- */
 .docs { display: grid; gap: .75rem; }
 @media (min-width: 760px) { .docs { grid-template-columns: 1fr 1fr; } }
+/* Sin min-width:0, una dirección de correo larga fuerza a ensanchar la columna
+   de la rejilla y saca el scroll horizontal en móvil. */
+.grid > *, .split > *, .docs > *, .paths > *, .tiers > *, .case-list > * { min-width: 0; }
+
 .doc {
-  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  display: flex; justify-content: space-between; align-items: center; gap: .5rem 1rem;
+  flex-wrap: wrap; overflow-wrap: anywhere;
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-input);
-  padding: 1rem 1.25rem; text-decoration: none; color: inherit; font-weight: 600; font-size: .98rem;
+  padding: 1rem 1.25rem; text-decoration: none; color: inherit; font-weight: 600; font-size: .95rem;
   transition: border-color .16s var(--ease), background-color .16s var(--ease);
 }
 .doc:hover { border-color: var(--accent); }
