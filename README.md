@@ -30,6 +30,8 @@ assets/css/site.css       Todo el diseño en un único archivo
 assets/js/site.js         Menú, salida rápida, validación de formularios
 assets/fonts/             Tipografías autoalojadas (Cormorant Garamond y Public Sans)
 assets/img/               Logotipo horizontal (verde y blanco), emblema y favicon
+assets/docs/              Estatutos, inscripción registral y documentos legales en PDF
+vercel.json               Redirecciones de las URL antiguas y cabeceras de seguridad
 ```
 
 La cabecera y el pie están duplicados en cada página porque no hay proceso de
@@ -60,6 +62,14 @@ Verificado sobre las trece páginas, a 1280 y 375 píxeles de ancho, en tema cla
 y oscuro: sin desbordamiento horizontal, sin saltos en la jerarquía de
 encabezados, sin enlaces ni anclas rotas y sin ningún texto por debajo del
 contraste AA.
+
+## Migración desde WordPress
+
+`vercel.json` redirige con 301 las direcciones del WordPress anterior que tenían
+contenido real, para no perder los enlaces que ya existen por ahí ni lo que
+Google tiene indexado. Los PDF que antes se servían desde `wp-content` están
+ahora en `assets/docs/`: si se hubieran dejado enlazados al dominio antiguo,
+habrían dejado de funcionar el mismo día del cambio de DNS.
 
 ## Notas internas
 
