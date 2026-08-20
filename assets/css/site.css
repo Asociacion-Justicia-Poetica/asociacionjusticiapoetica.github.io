@@ -504,6 +504,8 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 
 /* --- Importes (Poeta Guerrero) ------------------------------------------ */
 .amounts { display: grid; grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr)); gap: .7rem; }
+.amounts-sm { grid-template-columns: repeat(auto-fit, minmax(4.2rem, 1fr)); }
+.amounts-sm .amount-option span { padding: .8rem .3rem; font-size: 1.05rem; }
 .amount-option { position: relative; }
 .amount-option input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
 .amount-option span {

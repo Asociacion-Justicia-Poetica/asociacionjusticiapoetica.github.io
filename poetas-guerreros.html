@@ -78,15 +78,14 @@
 
         <div class="tier">
           <span class="per">Poeta de la Justicia</span>
-          <span class="amount">2 €</span>
-          <span class="per">al mes</span>
+          <span class="amount">2 a 9 €</span>
+          <span class="per">al mes, la cantidad que elijas</span>
           <ul>
             <li>Carnet con código QR acreditativo.</li>
             <li>Ventajas y descuentos entre nuestros colaboradores.</li>
             <li>Informe trimestral del estado de las causas.</li>
           </ul>
-          <!-- PENDIENTE: sustituir por el Payment Link real de Stripe (2 €/mes). -->
-          <a class="btn btn-secondary" href="https://buy.stripe.com/PENDIENTE-poeta-justicia">Aportar 2 € al mes</a>
+          <a class="btn btn-secondary" href="#alta-justicia">Elegir mi cuota</a>
         </div>
 
         <div class="tier tier-featured">
@@ -109,73 +108,102 @@
   <section id="alta">
     <div class="wrap wrap-narrow">
       <h2>Hazte Poeta Guerrero</h2>
-      <p class="muted">Elige tu aportación mensual. El pago lo gestiona Stripe en su propia pasarela segura, donde introducirás tus datos. La Asociación no ve ni guarda tu número de tarjeta.</p>
+      <p class="muted">Elige tu aportación mensual. El cobro lo gestiona Stripe en su propia pasarela. La Asociación no ve ni guarda tu número de tarjeta en ningún momento.</p>
 
-      <!-- ==========================================================
-           PENDIENTE ANTES DE PUBLICAR:
-           Cada opción apunta a un Payment Link recurrente de Stripe que
-           todavía hay que crear en la cuenta de la Asociación.
-           Ver README.md, apartado "Alta de Poetas con Stripe".
-           El formulario funciona sin JavaScript: si no carga, el usuario
-           ve los enlaces directos del bloque noscript.
-           ========================================================== -->
-      <form class="form" id="form-alta" data-validate method="get" action="https://buy.stripe.com/PENDIENTE-poeta-guerrero-10" style="margin-top:2rem">
-        <p class="form-error" role="alert" aria-live="assertive"></p>
-
+      <form class="form" id="form-guerrero" data-importes method="get" action="https://donate.stripe.com/5kQcN43al6pH4gegmT4Ja08" style="margin-top:2rem">
         <fieldset>
           <legend>Tu aportación mensual</legend>
           <div class="amounts" style="margin-top:1rem">
             <label class="amount-option">
-              <input type="radio" name="importe" value="10" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-10" checked required>
+              <input type="radio" name="importe_guerrero" value="10" data-url="https://donate.stripe.com/5kQcN43al6pH4gegmT4Ja08" checked required>
               <span>10 €</span>
             </label>
             <label class="amount-option">
-              <input type="radio" name="importe" value="15" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-15">
-              <span>15 €</span>
+              <input type="radio" name="importe_guerrero" value="20" data-url="https://donate.stripe.com/8x200ieT35lD2867Qn4Ja09" required>
+              <span>20 €</span>
             </label>
             <label class="amount-option">
-              <input type="radio" name="importe" value="25" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-25">
-              <span>25 €</span>
-            </label>
-            <label class="amount-option">
-              <input type="radio" name="importe" value="50" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-50">
+              <input type="radio" name="importe_guerrero" value="50" data-url="https://donate.stripe.com/00weVcdOZ5lDaEC7Qn4Ja0a" required>
               <span>50 €</span>
             </label>
-            <label class="amount-option">
-              <input type="radio" name="importe" value="otro" data-url="https://buy.stripe.com/PENDIENTE-poeta-guerrero-libre">
-              <span>Otro</span>
-            </label>
-          </div>
-          <p class="help" style="margin-top:.75rem">A partir de 10 euros al mes eres Poeta Guerrero. Por debajo de esa cantidad, Poeta de la Justicia.</p>
-
-          <div class="field" style="margin-top:1.25rem" hidden>
-            <label for="importe-libre">Cantidad que quieres aportar cada mes</label>
-            <input type="number" id="importe-libre" name="importe_libre" min="2" step="1" inputmode="numeric">
-            <p class="help">En euros. Podrás confirmarla en el paso siguiente.</p>
           </div>
         </fieldset>
 
-        <div class="form-note">
-          <p><strong>En el paso siguiente, en la pasarela de Stripe,</strong> introducirás tu nombre, tu correo y la forma de pago. Puedes pagar con tarjeta o domiciliar el recibo en tu cuenta.</p>
-          <p style="margin-bottom:0">Si quieres el certificado de donaciones para la declaración de la renta, añade tu NIF cuando Stripe te lo pida.</p>
-        </div>
-
         <button class="btn btn-primary btn-lg btn-block" type="submit">Continuar al pago seguro</button>
-        <p class="small muted" style="text-align:center">Puedes darte de baja cuando quieras escribiendo a asociacionjusticiapoetica@gmail.com. Sin explicaciones y sin preguntas.</p>
       </form>
 
-      <noscript>
-        <div class="form-note" style="margin-top:1.5rem">
-          <p><strong>Elige tu aportación mensual:</strong></p>
-          <p style="margin-bottom:0">
-            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-10">10 euros</a> ·
-            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-15">15 euros</a> ·
-            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-25">25 euros</a> ·
-            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-50">50 euros</a> ·
-            <a href="https://buy.stripe.com/PENDIENTE-poeta-guerrero-libre">otra cantidad</a>
-          </p>
-        </div>
-      </noscript>
+      <div class="form-note" style="margin-top:1.5rem">
+        <p><strong>Por qué te pedimos el NIF y la dirección.</strong></p>
+        <p>En el paso siguiente, ya dentro de Stripe, verás que te pedimos esos dos datos. Es normal recelar, así que lo explicamos:</p>
+        <p>Los necesitamos <strong>solo para emitir tu certificado de donación</strong>. Ese certificado es lo que te permite desgravar la aportación en la declaración de la renta, y para expedirlo la Asociación está obligada a identificar a quien dona, con nombre, NIF y domicilio. Sin esos datos, Hacienda no admite la deducción.</p>
+        <p>No los usamos para nada más. No se ceden a terceros, no alimentan ninguna lista de publicidad y no te vamos a llamar. <strong>El NIF es opcional</strong>: si no quieres el certificado, déjalo en blanco y la aportación funciona exactamente igual.</p>
+        <p style="margin-bottom:0">Tu tarjeta o tu cuenta bancaria las trata Stripe directamente. Nosotros nunca las vemos.</p>
+      </div>
+
+      <p class="small muted" style="text-align:center;margin-top:1rem">Puedes darte de baja cuando quieras escribiendo a asociacionjusticiapoetica@gmail.com. Sin explicaciones y sin preguntas.</p>
+    </div>
+  </section>
+
+  <section id="alta-justicia" class="tight" style="background:var(--surface);border-block:1px solid var(--line)">
+    <div class="wrap wrap-narrow">
+      <h2>¿No llegas a diez euros?</h2>
+      <p class="muted">Entonces eres Poeta de la Justicia, y sigues formando parte de esto. Elige lo que puedas, entre 2 y 9 euros al mes.</p>
+
+      <form class="form" id="form-justicia" data-importes method="get" action="https://donate.stripe.com/7sY7sKh1b9BT4gedaH4Ja00" style="margin-top:2rem">
+        <fieldset>
+          <legend>Tu aportación mensual</legend>
+          <div class="amounts amounts-sm" style="margin-top:1rem">
+            <label class="amount-option">
+              <input type="radio" name="importe_justicia" value="2" data-url="https://donate.stripe.com/7sY7sKh1b9BT4gedaH4Ja00" checked required>
+              <span>2 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe_justicia" value="3" data-url="https://donate.stripe.com/14A14m5itbK1dQO8Ur4Ja01" required>
+              <span>3 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe_justicia" value="4" data-url="https://donate.stripe.com/4gM7sK12d6pH286eeL4Ja02" required>
+              <span>4 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe_justicia" value="5" data-url="https://donate.stripe.com/bJeeVcaCN01jh302w34Ja03" required>
+              <span>5 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe_justicia" value="6" data-url="https://donate.stripe.com/eVq9ASfX7cO5142b2z4Ja04" required>
+              <span>6 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe_justicia" value="7" data-url="https://donate.stripe.com/9B69AS8uF4hzbIG5If4Ja05" required>
+              <span>7 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe_justicia" value="8" data-url="https://donate.stripe.com/bJe7sKeT3aFX5ki7Qn4Ja06" required>
+              <span>8 €</span>
+            </label>
+            <label class="amount-option">
+              <input type="radio" name="importe_justicia" value="9" data-url="https://donate.stripe.com/cNi5kC7qBdS93ca5If4Ja07" required>
+              <span>9 €</span>
+            </label>
+          </div>
+          <p class="help" style="margin-top:.75rem">Con cualquiera de estas cantidades recibes el carnet con código QR, las ventajas asociadas y el informe trimestral.</p>
+        </fieldset>
+
+        <button class="btn btn-secondary btn-lg btn-block" type="submit">Continuar al pago seguro</button>
+      </form>
+
+      <p class="small muted" style="margin-top:1.5rem">Y si ahora mismo ni eso, está el <a href="https://www.teaming.net/justiciapoetica" rel="noopener">grupo de Teaming por 1 euro al mes</a>. Una cantidad ridícula para ti que, junto a la de muchos otros, no lo es.</p>
+    </div>
+  </section>
+
+  <section class="tight">
+    <div class="wrap wrap-narrow">
+      <h2>Prefiero dar una sola vez</h2>
+      <p>No todo el mundo puede comprometerse cada mes, y un donativo puntual también sostiene causas. Elige tú la cantidad.</p>
+      <div class="btn-row" style="margin-top:1.5rem">
+        <a class="btn btn-secondary btn-lg" href="https://donate.stripe.com/9B68wOaCN4hzcMK6Mj4Ja0b">Hacer un donativo puntual</a>
+      </div>
+      <p class="small muted" style="margin-top:1rem">Un solo cobro. No se renueva ni queda nada domiciliado.</p>
     </div>
   </section>
 
@@ -336,15 +364,17 @@
 
 <script src="assets/js/site.js" defer></script>
 <script>
-/* Envía al Payment Link que corresponde al importe elegido. */
+/* Lleva al enlace de pago que corresponde al importe elegido.
+   Sin JavaScript, el formulario se envía a su action, que es el importe
+   marcado por defecto: nadie se queda sin poder aportar. */
 (function () {
-  var form = document.getElementById('form-alta');
-  if (!form) return;
-  form.addEventListener('submit', function (e) {
-    var chosen = form.querySelector('input[name="importe"]:checked');
-    if (!chosen) return;
-    e.preventDefault();
-    window.location.href = chosen.getAttribute('data-url');
+  document.querySelectorAll('form[data-importes]').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      var elegido = form.querySelector('input[type="radio"]:checked');
+      if (!elegido) return;
+      e.preventDefault();
+      window.location.href = elegido.getAttribute('data-url');
+    });
   });
 })();
 </script>

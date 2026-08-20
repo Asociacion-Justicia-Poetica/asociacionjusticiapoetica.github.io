@@ -151,18 +151,4 @@
     });
   });
 
-  /* --- Importe libre en el alta de Poeta -------------------------------- */
-  var custom = document.getElementById('importe-libre');
-  var amountRadios = document.querySelectorAll('input[name="importe"]');
-
-  if (custom && amountRadios.length) {
-    Array.prototype.forEach.call(amountRadios, function (radio) {
-      radio.addEventListener('change', function () {
-        var isOther = radio.value === 'otro' && radio.checked;
-        custom.closest('.field').hidden = !isOther;
-        custom.required = isOther;
-        if (isOther) custom.focus();
-      });
-    });
-  }
 })();
