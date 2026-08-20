@@ -78,7 +78,7 @@ function paginaDeError(res, titular, explicacion) {
       <p class="lede">${explicacion}</p>
       <div class="form-note" style="margin-top:2rem">
         <p><strong>No lo dejes aquí.</strong> Estos canales funcionan y los atendemos igual.</p>
-        <p style="margin-bottom:0">Teléfono y WhatsApp <strong>608 14 16 25</strong><br>
+        <p style="margin-bottom:0">WhatsApp <a href="https://wa.me/34608141625" rel="noopener">608 14 16 25</a><br>
         Correo <a href="mailto:asociacionjusticiapoetica@gmail.com">asociacionjusticiapoetica@gmail.com</a></p>
       </div>
       <div class="btn-row" style="margin-top:2rem">

@@ -310,6 +310,14 @@ section.tight { padding-block: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); }
 .emergency ul { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem 1.75rem; margin: 0; padding: 0; font-size: .95rem; }
 .emergency a { color: var(--ink); font-weight: 600; }
 
+/* Variante para la franja de contacto directo: mismo peso visual, sin la
+   carga de alarma del rojo. */
+.emergency.is-directo {
+  background: var(--accent-wash);
+  border-block-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.emergency.is-directo strong { color: var(--accent-ink); }
+
 /* --- Portada ------------------------------------------------------------ */
 .hero { padding-block: clamp(2.5rem, 1.5rem + 5vw, 5rem) clamp(3rem, 2rem + 4vw, 4.5rem); }
 .hero-grid { display: grid; gap: clamp(2rem, 1rem + 4vw, 4rem); align-items: center; }
