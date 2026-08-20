@@ -582,6 +582,24 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 }
 .deep .firma { color: var(--deep-ink); }
 
+/* --- Bizum -------------------------------------------------------------- */
+p.bizum-etiqueta {
+  margin: 1.25rem 0 .1rem; font-size: .82rem; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft);
+}
+p.bizum-codigo {
+  margin: 0 0 1rem;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.6rem, 2rem + 3vw, 3.6rem); font-weight: 700;
+  letter-spacing: .12em; line-height: 1; color: var(--accent-ink);
+}
+.bizum-pasos {
+  margin: 0 0 1rem; padding-left: 1.2rem;
+  display: grid; gap: .5rem; font-size: .97rem;
+}
+.bizum-pasos li { padding-left: .2rem; }
+.bizum-pasos li::marker { color: var(--gold); font-weight: 700; }
+
 /* --- Carnet de Poeta ---------------------------------------------------- */
 .carnet {
   width: 100%; height: auto; display: block;
