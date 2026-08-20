@@ -5,6 +5,8 @@
   "description": "Web de la Asociación Justicia Poética",
   "type": "module",
   "dependencies": {
-    "nodemailer": "^6.9.16"
+    "nodemailer": "^6.9.16",
+    "qrcode": "^1.5.4",
+    "stripe": "^17.5.0"
   }
 }

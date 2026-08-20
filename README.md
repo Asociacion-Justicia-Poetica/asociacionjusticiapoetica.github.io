@@ -30,6 +30,8 @@ assets/css/site.css       Todo el diseño en un único archivo
 assets/js/site.js         Menú, salida rápida, validación de formularios
 assets/fonts/             Tipografías autoalojadas (Cormorant Garamond y Public Sans)
 assets/img/               Logotipo horizontal (verde y blanco), emblema y favicon
+api/                      Funciones de servidor, todas en Fráncfort
+lib/                      Piezas compartidas por las funciones
 assets/docs/              Estatutos, inscripción registral y documentos legales en PDF
 vercel.json               Redirecciones de las URL antiguas y cabeceras de seguridad
 ```

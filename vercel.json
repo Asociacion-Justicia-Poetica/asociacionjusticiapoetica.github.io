@@ -140,6 +140,12 @@
   "functions": {
     "api/solicitud-ayuda.js": {
       "maxDuration": 15
+    },
+    "api/stripe-webhook.js": {
+      "maxDuration": 30
+    },
+    "api/carnet.js": {
+      "maxDuration": 15
     }
   }
 }
