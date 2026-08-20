@@ -580,6 +580,13 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 }
 .deep .firma { color: var(--deep-ink); }
 
+/* --- Carnet de Poeta ---------------------------------------------------- */
+.carnet {
+  width: 100%; height: auto; display: block;
+  border-radius: 14px;
+  box-shadow: var(--shadow-lift);
+}
+
 /* --- Marcadores de imagen pendiente ------------------------------------- */
 .img-slot {
   display: grid; place-items: center; text-align: center;
