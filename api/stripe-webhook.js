@@ -19,11 +19,8 @@
  * SITIO_URL y las de correo que ya usa el formulario de ayuda.
  */
 
-import Stripe from 'stripe';
 import nodemailer from 'nodemailer';
-import { NIVELES, urlCarnet, qrPng, SITIO } from '../lib/carnet.js';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import { NIVELES, urlCarnet, qrPng, stripeCliente } from '../lib/carnet.js';
 
 function cuerpoEnCrudo(req) {
   return new Promise((resolve, reject) => {
@@ -45,6 +42,7 @@ function cuerpoEnCrudo(req) {
  * El 001 está reservado a Mario Díez, socio fundador.
  */
 async function siguienteNumeroSocio() {
+  const stripe = stripeCliente();
   let mayor = 1;
   let pagina = await stripe.customers.list({ limit: 100 });
   let vueltas = 0;
@@ -91,6 +89,7 @@ export default async function handler(req, res) {
 
   let evento;
   try {
+    const stripe = stripeCliente();
     const crudo = await cuerpoEnCrudo(req);
     evento = stripe.webhooks.constructEvent(
       crudo,
@@ -114,6 +113,7 @@ export default async function handler(req, res) {
     // El donativo puntual no lleva carnet.
     if (!nivel) return res.status(200).json({ ignorado: 'producto sin carnet' });
 
+    const stripe = stripeCliente();
     const cliente = await stripe.customers.retrieve(sub.customer);
     if (!cliente || cliente.deleted) {
       return res.status(200).json({ ignorado: 'cliente inexistente' });

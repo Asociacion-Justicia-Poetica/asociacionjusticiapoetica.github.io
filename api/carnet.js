@@ -10,10 +10,7 @@
  * al corriente. Lo justo para acreditar la condición de Poeta.
  */
 
-import Stripe from 'stripe';
-import { NIVELES, firmaValida, urlCarnet, qrDataUri, paginaCarnet } from '../lib/carnet.js';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import { NIVELES, firmaValida, urlCarnet, qrDataUri, paginaCarnet, stripeCliente, SITIO } from '../lib/carnet.js';
 
 function respuestaSimple(res, titulo, texto) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -21,22 +18,25 @@ function respuestaSimple(res, titulo, texto) {
   return res.status(404).send(`<!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${titulo} | Asociación Justicia Poética</title><meta name="robots" content="noindex">
-<link rel="stylesheet" href="${process.env.SITIO_URL || ''}/assets/css/site.css"></head>
+<link rel="stylesheet" href="${SITIO}/assets/css/site.css"></head>
 <body><main><section><div class="wrap wrap-narrow">
 <h1>${titulo}</h1><p class="lede">${texto}</p>
 </div></section></main></body></html>`);
 }
 
 export default async function handler(req, res) {
-  const idCliente = String(req.query.c || '');
-  const s = String(req.query.s || '');
-
-  if (!idCliente || !firmaValida(idCliente, s)) {
-    return respuestaSimple(res, 'Carnet no encontrado',
-      'Esta dirección no corresponde a ningún carnet. Comprueba el enlace que recibiste por correo.');
-  }
-
+  // Todo dentro del try, incluida la comprobación de la firma: si falta alguna
+  // variable de entorno lanza, y sin esto sería un 500 sin explicación.
   try {
+    const idCliente = String(req.query.c || '');
+    const s = String(req.query.s || '');
+
+    if (!idCliente || !firmaValida(idCliente, s)) {
+      return respuestaSimple(res, 'Carnet no encontrado',
+        'Esta dirección no corresponde a ningún carnet. Comprueba el enlace que recibiste por correo.');
+    }
+
+    const stripe = stripeCliente();
     const cliente = await stripe.customers.retrieve(idCliente);
     if (!cliente || cliente.deleted) {
       return respuestaSimple(res, 'Carnet no encontrado', 'Este carnet ya no existe.');
