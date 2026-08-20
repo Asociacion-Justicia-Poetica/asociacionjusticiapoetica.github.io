@@ -4,16 +4,21 @@
 
    Reglas fijadas para todo el sitio:
    - Un tema por página: claro por defecto, oscuro si el sistema lo pide.
-   - Un color de acento: terracota (heredado de la marca actual).
+   - Paleta tomada del logotipo: verde profundo, dorado y papel hueso.
+   - El dorado nunca se usa para texto pequeño sobre fondo claro: no da contraste.
+     Vive sobre el verde oscuro y en detalles.
+   - Serif (Cormorant Garamond) en titulares, para hablar el idioma del logotipo.
+     Sans (Public Sans) en texto corrido, botones y formularios, donde manda la
+     legibilidad.
    - Radios: pastilla en botones, 12px en tarjetas, 8px en campos de formulario.
    - Movimiento mínimo. Este sitio lo visita gente en crisis.
    ========================================================================== */
 
 /* --- Tipografías autoalojadas (nada sale hacia servidores de terceros) --- */
 @font-face {
-  font-family: 'Outfit';
-  src: url('../fonts/outfit-var.woff2') format('woff2-variations');
-  font-weight: 100 900;
+  font-family: 'Cormorant Garamond';
+  src: url('../fonts/cormorant-garamond-var.woff2') format('woff2-variations');
+  font-weight: 300 700;
   font-style: normal;
   font-display: swap;
 }
@@ -34,41 +39,42 @@
 
 /* --- Tokens ------------------------------------------------------------- */
 :root {
-  --paper: #f6f5f3;
+  /* Colores muestreados del logotipo:
+     verde #124a48, verde de fondo #0c3c36, dorado #c69636,
+     papel #f2efe9, negro #171717 */
+  --paper: #f2efe9;
   --surface: #ffffff;
-  --surface-sunken: #eeece8;
-  --ink: #1c1b19;
-  --ink-soft: #5b5751;
-  --line: #dcd8d1;
-  --line-strong: #c4bfb6;
+  --surface-sunken: #e9e5db;
+  --ink: #171717;
+  --ink-soft: #56534d;
+  --line: #ddd8cc;
+  --line-strong: #c3bdae;
 
-  /* Acento heredado de la marca: terracota #e05d41.
-     -ink es la variante que pasa AA sobre papel; -flat es el relleno. */
-  --accent: #e05d41;
-  --accent-ink: #b23f26;
-  --accent-flat: #b23f26;
-  --accent-wash: #fbeee9;
+  --brand: #124a48;
+  --accent: #1c6b64;
+  --accent-ink: #124a48;
+  --accent-flat: #124a48;
+  --accent-wash: #e6edeb;
 
-  /* Secundario de marca: oliva #667a62. Solo superficies y detalles. */
-  --olive: #667a62;
-  --olive-ink: #465440;
-  --olive-wash: #e8ede6;
+  --gold: #c69636;
+  --gold-ink: #7d5c13;
+  --gold-wash: #f7f0df;
 
   --alert: #8f1d1d;
   --alert-wash: #fbeaea;
 
   --on-accent: #ffffff;
-  --deep: #1e211d;
-  --deep-ink: #f2f1ed;
-  --deep-soft: #b5b8b1;
-  --deep-line: #363a33;
+  --deep: #0c3c36;
+  --deep-ink: #f2efe9;
+  --deep-soft: #b3c2be;
+  --deep-line: #23514a;
 
   --r-pill: 999px;
   --r-card: 12px;
   --r-input: 8px;
 
-  --shadow-card: 0 1px 2px rgba(28, 27, 25, .04), 0 8px 24px -12px rgba(28, 27, 25, .12);
-  --shadow-lift: 0 2px 4px rgba(28, 27, 25, .06), 0 16px 32px -14px rgba(28, 27, 25, .2);
+  --shadow-card: 0 1px 2px rgba(12, 60, 54, .05), 0 8px 24px -12px rgba(12, 60, 54, .16);
+  --shadow-lift: 0 2px 4px rgba(12, 60, 54, .07), 0 16px 32px -14px rgba(12, 60, 54, .26);
 
   --wrap: 1180px;
   --wrap-narrow: 720px;
@@ -77,30 +83,31 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #171815;
-    --surface: #1f211d;
-    --surface-sunken: #131412;
-    --ink: #f1efeb;
-    --ink-soft: #aeaaa2;
-    --line: #33362f;
-    --line-strong: #474b42;
+    --paper: #121f1d;
+    --surface: #192a27;
+    --surface-sunken: #0d1817;
+    --ink: #f0ede6;
+    --ink-soft: #a8b2ae;
+    --line: #2a3d39;
+    --line-strong: #3d534e;
 
-    --accent: #f0785d;
-    --accent-ink: #f6a08b;
-    --accent-flat: #c04a2e;
-    --accent-wash: #2b1d18;
+    --brand: #3f8d84;
+    --accent: #3f8d84;
+    --accent-ink: #86c0b6;
+    --accent-flat: #1c6b64;
+    --accent-wash: #17302c;
 
-    --olive: #8ea488;
-    --olive-ink: #a8bda2;
-    --olive-wash: #1f251d;
+    --gold: #d9a94a;
+    --gold-ink: #d9a94a;
+    --gold-wash: #2a2214;
 
     --alert: #f0a1a1;
     --alert-wash: #2c1717;
 
-    --deep: #101210;
-    --deep-ink: #f1efeb;
-    --deep-soft: #a9aca5;
-    --deep-line: #2b2e29;
+    --deep: #0a2b27;
+    --deep-ink: #f2efe9;
+    --deep-soft: #b3c2be;
+    --deep-line: #1d443e;
 
     --shadow-card: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
     --shadow-lift: 0 2px 4px rgba(0, 0, 0, .45), 0 16px 32px -14px rgba(0, 0, 0, .7);
@@ -132,12 +139,22 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Outfit', 'Public Sans', ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -.02em;
-  line-height: 1.12;
   margin: 0 0 .5em;
   text-wrap: balance;
+}
+/* La serif habla el idioma del logotipo. Se reserva a los titulares grandes:
+   a tamaños pequeños pierde legibilidad y ahí manda la sans. */
+h1, h2 {
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  letter-spacing: -.005em;
+  line-height: 1.14;
+}
+h3, h4 {
+  font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.25;
 }
 h1 { font-size: clamp(2.1rem, 1.4rem + 3vw, 3.5rem); }
 h2 { font-size: clamp(1.65rem, 1.2rem + 1.9vw, 2.4rem); }
@@ -187,7 +204,7 @@ section.tight { padding-block: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); }
 /* --- Botones ------------------------------------------------------------ */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
-  font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem;
+  font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: 1rem;
   line-height: 1; white-space: nowrap;
   padding: .95rem 1.6rem; border-radius: var(--r-pill);
   border: 1.5px solid transparent; cursor: pointer; text-decoration: none;
@@ -228,8 +245,8 @@ section.tight { padding-block: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); }
   height: 72px; max-width: var(--wrap); margin-inline: auto; padding-inline: 1.25rem;
 }
 .brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; flex: 0 0 auto; }
-.brand img { height: 38px; width: auto; }
-@media (prefers-color-scheme: dark) { .brand img { filter: brightness(0) invert(1); opacity: .92; } }
+.brand picture, .brand img { display: block; }
+.brand img { height: 40px; width: auto; }
 
 .nav { margin-left: auto; display: flex; align-items: center; gap: 1.4rem; }
 .nav a {
@@ -249,7 +266,7 @@ section.tight { padding-block: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); }
   margin-left: auto; display: none; align-items: center; gap: .5rem;
   background: transparent; border: 1.5px solid var(--line-strong); color: var(--ink);
   border-radius: var(--r-pill); padding: .55rem 1rem;
-  font-family: 'Outfit', sans-serif; font-weight: 700; font-size: .9rem; cursor: pointer;
+  font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: .9rem; cursor: pointer;
 }
 
 @media (max-width: 940px) {
@@ -263,7 +280,11 @@ section.tight { padding-block: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); }
   }
   .nav[hidden] { display: none; }
   .nav a { padding: .9rem 0; border-bottom: 1px solid var(--line); }
-  .nav a:hover, .nav a[aria-current="page"] { border-bottom-color: var(--line); color: var(--accent-ink); }
+  /* El :not(.btn) es necesario: sin él esta regla pisa el color del botón
+     principal y, en la página actual, queda verde sobre verde. */
+  .nav a:not(.btn) { border-bottom: 1px solid var(--line); }
+  .nav a:not(.btn):hover,
+  .nav a:not(.btn)[aria-current="page"] { border-bottom-color: var(--line); color: var(--accent-ink); }
   .nav .btn { margin-top: 1rem; justify-content: center; }
 }
 
@@ -273,7 +294,7 @@ section.tight { padding-block: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); }
   display: inline-flex; align-items: center; gap: .5rem;
   background: #8f1d1d; color: #ffffff; border: 0;
   border-radius: var(--r-pill); padding: .8rem 1.3rem;
-  font-family: 'Outfit', sans-serif; font-weight: 700; font-size: .95rem;
+  font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: .95rem;
   cursor: pointer; box-shadow: var(--shadow-lift);
 }
 .exit-bar:hover { background: #5e1212; }
@@ -285,7 +306,7 @@ section.tight { padding-block: clamp(2.25rem, 1.5rem + 3vw, 3.5rem); }
   border-block: 1px solid color-mix(in srgb, var(--alert) 25%, transparent);
 }
 .emergency .wrap { display: flex; flex-wrap: wrap; gap: .5rem 2rem; align-items: baseline; padding-block: 1rem; }
-.emergency strong { font-family: 'Outfit', sans-serif; color: var(--alert); }
+.emergency strong { font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; color: var(--alert); }
 .emergency ul { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem 1.75rem; margin: 0; padding: 0; font-size: .95rem; }
 .emergency a { color: var(--ink); font-weight: 600; }
 
@@ -348,7 +369,7 @@ a.card .more { margin-top: auto; padding-top: .75rem; font-weight: 600; color: v
   transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-left-color .18s var(--ease);
 }
 .path:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-left-color: var(--ink); }
-.path strong { display: block; font-family: 'Outfit', sans-serif; font-size: 1.12rem; margin-bottom: .3rem; }
+.path strong { display: block; font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: 1.08rem; margin-bottom: .3rem; }
 .path span { color: var(--ink-soft); font-size: .97rem; }
 
 /* --- Bloque oscuro ------------------------------------------------------ */
@@ -364,11 +385,11 @@ a.card .more { margin-top: auto; padding-top: .75rem; font-weight: 600; color: v
 @media (min-width: 640px) { .figures { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 940px) { .figures { grid-template-columns: repeat(4, 1fr); } }
 .figure .n {
-  display: block; font-family: 'Outfit', sans-serif; font-weight: 700;
+  display: block; font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-weight: 600;
   font-size: clamp(2.1rem, 1.6rem + 2vw, 2.9rem); line-height: 1; letter-spacing: -.03em;
   color: var(--accent-ink);
 }
-.deep .figure .n { color: var(--accent); }
+.deep .figure .n { color: var(--gold); }
 .figure p { font-size: .95rem; margin: .5rem 0 0; }
 
 /* --- Niveles de aportación ---------------------------------------------- */
@@ -378,9 +399,9 @@ a.card .more { margin-top: auto; padding-top: .75rem; font-weight: 600; color: v
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-card);
   padding: 1.75rem; display: flex; flex-direction: column;
 }
-.tier-featured { border-color: var(--accent); border-width: 2px; box-shadow: var(--shadow-lift); }
+.tier-featured { border-color: var(--gold); border-width: 2px; box-shadow: var(--shadow-lift); }
 .tier .amount {
-  font-family: 'Outfit', sans-serif; font-weight: 700; letter-spacing: -.03em;
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-weight: 600; letter-spacing: -.01em;
   font-size: 2.4rem; line-height: 1; margin: .35rem 0 .1rem;
 }
 .tier .per { font-size: .95rem; color: var(--ink-soft); }
@@ -389,12 +410,12 @@ a.card .more { margin-top: auto; padding-top: .75rem; font-weight: 600; color: v
 .tier ul li::before {
   content: ""; position: absolute; left: 0; top: .55em;
   width: .7rem; height: .7rem; border-radius: 2px;
-  background: var(--accent); opacity: .85;
+  background: var(--gold);
 }
 .tier .btn { margin-top: auto; }
 .tier-flag {
   align-self: flex-start; background: var(--accent-flat); color: var(--on-accent);
-  font-family: 'Outfit', sans-serif; font-weight: 700; font-size: .78rem;
+  font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: .78rem;
   letter-spacing: .04em; padding: .3rem .7rem; border-radius: var(--r-pill);
 }
 
@@ -409,11 +430,11 @@ a.card .more { margin-top: auto; padding-top: .75rem; font-weight: 600; color: v
 .case p { font-size: .97rem; margin-bottom: .75rem; }
 .case-state {
   display: inline-block; font-size: .82rem; font-weight: 600;
-  font-family: 'Outfit', sans-serif; letter-spacing: .02em;
+  font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; letter-spacing: .02em;
   padding: .25rem .7rem; border-radius: var(--r-pill);
   background: var(--olive-wash); color: var(--olive-ink);
 }
-.case-state.is-won { background: var(--accent-wash); color: var(--accent-ink); }
+.case-state.is-won { background: var(--gold-wash); color: var(--gold-ink); }
 
 /* --- Formularios -------------------------------------------------------- */
 .form { display: grid; gap: 1.5rem; }
@@ -448,7 +469,7 @@ select {
 }
 
 fieldset { border: 1px solid var(--line); border-radius: var(--r-card); padding: 1.25rem; margin: 0; }
-legend { font-family: 'Outfit', sans-serif; font-weight: 700; padding-inline: .5rem; font-size: 1.02rem; }
+legend { font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; padding-inline: .5rem; font-size: 1.02rem; }
 
 .choice { display: grid; gap: .75rem; margin-top: .75rem; }
 .choice label {
@@ -488,7 +509,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 .amount-option span {
   display: block; text-align: center; padding: 1rem .5rem;
   border: 1.5px solid var(--line-strong); border-radius: var(--r-input);
-  font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.15rem;
+  font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: 1.15rem;
   transition: border-color .16s var(--ease), background-color .16s var(--ease), color .16s var(--ease);
 }
 .amount-option input:hover + span { border-color: var(--ink-soft); }
@@ -500,7 +521,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 .faq details { border-bottom: 1px solid var(--line); }
 .faq summary {
   cursor: pointer; list-style: none; padding: 1.15rem 2.5rem 1.15rem 0; position: relative;
-  font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.05rem;
+  font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; font-size: 1.05rem;
 }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after {
@@ -512,8 +533,8 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 
 /* --- Cita --------------------------------------------------------------- */
 .pull {
-  border-left: 4px solid var(--accent); padding-left: 1.5rem; margin: 2.5rem 0;
-  font-family: 'Outfit', sans-serif; font-size: clamp(1.2rem, 1.05rem + .8vw, 1.6rem);
+  border-left: 3px solid var(--gold); padding-left: 1.5rem; margin: 2.5rem 0;
+  font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-weight: 500; font-size: clamp(1.3rem, 1.1rem + .9vw, 1.75rem);
   line-height: 1.35; letter-spacing: -.015em;
 }
 .pull cite { display: block; margin-top: .75rem; font-family: 'Public Sans', sans-serif; font-size: .95rem; font-style: normal; color: var(--ink-soft); letter-spacing: 0; }
@@ -528,7 +549,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
   width: 12px; height: 12px; border-radius: 50%;
   background: var(--paper); border: 2px solid var(--accent);
 }
-.timeline .when { display: block; font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--accent-ink); font-size: .95rem; }
+.timeline .when { display: block; font-family: 'Public Sans', ui-sans-serif, system-ui, sans-serif; font-weight: 700; color: var(--accent-ink); font-size: .95rem; }
 .timeline p { margin: .25rem 0 0; font-size: .98rem; }
 
 /* --- Marcadores de imagen pendiente ------------------------------------- */
@@ -561,7 +582,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"], select[aria-invalid="
 .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; font-size: .95rem; }
 .site-footer a { color: var(--deep-soft); text-decoration: none; }
 .site-footer a:hover { color: #fff; text-decoration: underline; }
-.site-footer img { height: 34px; width: auto; filter: brightness(0) invert(1); opacity: .9; margin-bottom: 1rem; }
+.site-footer img { height: 42px; width: auto; margin-bottom: 1.25rem; }
 .footer-legal {
   margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--deep-line);
   display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between;

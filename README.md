@@ -28,8 +28,8 @@ cookies.html              Política de cookies
 404.html                  Página de error
 assets/css/site.css       Todo el diseño en un único archivo
 assets/js/site.js         Menú, salida rápida, validación de formularios
-assets/fonts/             Tipografías autoalojadas (Outfit y Public Sans)
-assets/img/               Logotipo y favicon
+assets/fonts/             Tipografías autoalojadas (Cormorant Garamond y Public Sans)
+assets/img/               Logotipo horizontal (verde y blanco), emblema y favicon
 ```
 
 La cabecera y el pie están duplicados en cada página porque no hay proceso de
@@ -39,8 +39,13 @@ compilación. Si se tocan, hay que tocarlos en todas.
 
 - Un solo tema por página, claro por defecto, con modo oscuro por preferencia
   del sistema.
-- Un único color de acento, la terracota heredada de la marca, ajustada para
-  cumplir contraste AA.
+- Paleta tomada directamente del logotipo: verde profundo `#124a48`, verde de
+  fondo `#0c3c36`, dorado `#c69636` y papel hueso `#f2efe9`.
+- El dorado nunca se usa para texto pequeño sobre fondo claro, porque no llega a
+  contraste. Vive sobre el verde oscuro y en detalles.
+- Serif (Cormorant Garamond) en los titulares, para hablar el idioma del
+  logotipo. Sans (Public Sans) en texto corrido, botones y formularios, donde
+  manda la legibilidad.
 - Movimiento mínimo y siempre respetando `prefers-reduced-motion`. Este sitio lo
   visita gente en crisis.
 - Botón de salida rápida y aviso sobre el historial en la página de solicitud de
