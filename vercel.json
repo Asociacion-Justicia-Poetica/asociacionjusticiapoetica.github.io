@@ -149,6 +149,15 @@
     },
     "api/estado.js": {
       "maxDuration": 10
+    },
+    "api/aviso-vencimiento.js": {
+      "maxDuration": 60
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/aviso-vencimiento",
+      "schedule": "10 8 * * *"
+    }
+  ]
 }

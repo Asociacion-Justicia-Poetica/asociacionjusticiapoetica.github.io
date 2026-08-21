@@ -35,6 +35,9 @@ const PRODUCTO_DONATIVO = 'prod_V6oHqsbvZ3zwL3';
 /** Euros que equivalen a un mes de carnet en un donativo puntual. */
 const EUROS_POR_MES = 10;
 
+/** Tope de vigencia de un carnet ganado con donativos puntuales. */
+const MESES_MAXIMOS = 12;
+
 /**
  * Producto inactivo que guarda la correspondencia entre los donantes de la
  * plataforma antigua y su número de socio histórico. Los correos están
@@ -228,8 +231,8 @@ async function donativoPuntual(evento) {
   const esDonativo = lineas.data.some((l) => l.price?.product === PRODUCTO_DONATIVO);
   if (!esDonativo) return { ignorado: 'producto sin carnet' };
 
-  const meses = Math.floor((sesion.amount_total || 0) / (EUROS_POR_MES * 100));
-  if (meses < 1) return { ignorado: 'donativo inferior a un mes de carnet' };
+  const mesesBrutos = Math.floor((sesion.amount_total || 0) / (EUROS_POR_MES * 100));
+  if (mesesBrutos < 1) return { ignorado: 'donativo inferior a un mes de carnet' };
 
   const cliente = await stripe.customers.retrieve(sesion.customer);
   if (!cliente || cliente.deleted) return { ignorado: 'cliente inexistente' };
@@ -239,12 +242,21 @@ async function donativoPuntual(evento) {
     return { ignorado: 'sin correo' };
   }
 
-  // Se parte de lo que le quedara de vigencia, no de hoy.
+  // Se parte de lo que le quedara de vigencia, no de hoy: quien dona por
+  // segunda vez antes de agotar el carnet no debe perder lo que le quedaba.
   const ahora = new Date();
   const previo = cliente.metadata?.carnet_hasta ? new Date(cliente.metadata.carnet_hasta) : null;
   const desde = previo && previo > ahora ? previo : ahora;
   const fin = new Date(desde);
-  fin.setMonth(fin.getMonth() + meses);
+  fin.setMonth(fin.getMonth() + mesesBrutos);
+
+  // Tope de un año contado desde hoy. Un donativo de 500 € daría cincuenta
+  // meses de carnet, y ni el donante ni la Asociación ganan nada con eso.
+  const tope = new Date(ahora);
+  tope.setMonth(tope.getMonth() + MESES_MAXIMOS);
+  if (fin > tope) fin.setTime(tope.getTime());
+
+  const meses = Math.max(1, Math.round((fin - ahora) / (30.44 * 24 * 3600 * 1000)));
 
   const { numero, heredado } = await numeroPara(cliente);
   const nivel = 'Poeta Guerrero';
