@@ -146,6 +146,9 @@
     },
     "api/carnet.js": {
       "maxDuration": 15
+    },
+    "api/estado.js": {
+      "maxDuration": 10
     }
   }
 }
