@@ -54,6 +54,7 @@ export default async function handler(req, res) {
     const AL_CORRIENTE = new Set(['active', 'trialing', 'past_due']);
     let nivel = null;
     let activo = false;
+    let hasta = null;
     let motivo = 'Este carnet no da derecho a las ventajas de Poeta.';
 
     for (const sub of subs.data) {
@@ -66,6 +67,18 @@ export default async function handler(req, res) {
         if (!activo || nombreNivel === 'Poeta Guerrero') nivel = nombreNivel;
         activo = true;
         if (sub.status === 'past_due') motivo = 'Hay un recibo pendiente de cobro.';
+
+        // Quien cancela desde el portal conserva el carnet hasta el último día
+        // que ya pagó: la suscripción sigue activa y solo queda marcada para no
+        // renovarse. Lo decimos, que es información que el Poeta agradece.
+        if (sub.cancel_at_period_end) {
+          // En versiones recientes de la API la fecha vive en la línea, no en
+          // la suscripción. Se miran las dos.
+          const fin = sub.current_period_end || sub.items?.data?.[0]?.current_period_end;
+          if (fin) hasta = new Date(fin * 1000).toLocaleDateString('es-ES', {
+            day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid'
+          });
+        }
       } else if (!nivel) {
         nivel = nombreNivel;
         motivo = sub.status === 'canceled'
@@ -90,6 +103,7 @@ export default async function handler(req, res) {
       numero: cliente.metadata?.num_socio || '—',
       qr,
       activo,
+      hasta,
       motivo
     }));
   } catch (error) {
