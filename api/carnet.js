@@ -87,6 +87,26 @@ export default async function handler(req, res) {
       }
     }
 
+    // Carnet ganado con un donativo puntual: vale mientras no venza.
+    // Se cuenta cada 10 € donados como un mes de Poeta Guerrero.
+    const hastaGuardado = cliente.metadata?.carnet_hasta;
+    if (hastaGuardado) {
+      const vence = new Date(hastaGuardado);
+      const fecha = vence.toLocaleDateString('es-ES', {
+        day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid'
+      });
+      if (vence > new Date()) {
+        if (!activo) {
+          activo = true;
+          nivel = nivel || cliente.metadata?.nivel || 'Poeta Guerrero';
+          hasta = fecha;
+        }
+      } else if (!activo) {
+        nivel = nivel || cliente.metadata?.nivel || 'Poeta Guerrero';
+        motivo = `Este carnet estuvo vigente hasta el ${fecha}. Con un nuevo donativo vuelve a activarse: cada 10 € son un mes.`;
+      }
+    }
+
     if (!nivel) {
       return respuestaSimple(res, 'Carnet no encontrado',
         'No consta ninguna aportación asociada a este carnet.');
