@@ -19,8 +19,45 @@
  * SITIO_URL y las de correo que ya usa el formulario de ayuda.
  */
 
+import crypto from 'node:crypto';
 import nodemailer from 'nodemailer';
 import { NIVELES, urlCarnet, qrPng, stripeCliente } from '../lib/carnet.js';
+
+/**
+ * Producto inactivo que guarda la correspondencia entre los donantes de la
+ * plataforma antigua y su número de socio histórico. Los correos están
+ * cifrados: la metadata no permite saber quién es quién.
+ */
+const PRODUCTO_NUMEROS_HEREDADOS = 'prod_V73yfE6WgHv3zo';
+
+/**
+ * Número que esta persona ya tenía en la plataforma antigua, si lo tenía.
+ *
+ * Quien lleva donando desde 2023 con el número 5 conserva el 5. El número de
+ * socio es antigüedad, y perderla al migrar sería un agravio gratuito hacia
+ * quienes más tiempo llevan sosteniendo esto.
+ */
+async function numeroHeredado(correo) {
+  if (!correo) return null;
+  try {
+    const stripe = stripeCliente();
+    const producto = await stripe.products.retrieve(PRODUCTO_NUMEROS_HEREDADOS);
+    const buscado = crypto.createHash('sha256')
+      .update(String(correo).trim().toLowerCase()).digest('hex').slice(0, 16);
+
+    for (const [clave, valor] of Object.entries(producto.metadata || {})) {
+      if (!clave.startsWith('mapa_')) continue;
+      for (const par of String(valor).split(',')) {
+        const [h, numero] = par.split(':');
+        if (h === buscado && numero) return String(numero).padStart(3, '0');
+      }
+    }
+  } catch (error) {
+    // Que falle esto no puede impedir que alguien reciba su carnet.
+    console.error('No se pudo consultar el número heredado:', error && error.message);
+  }
+  return null;
+}
 
 function cuerpoEnCrudo(req) {
   return new Promise((resolve, reject) => {
@@ -129,7 +166,8 @@ export default async function handler(req, res) {
       return res.status(200).json({ ignorado: 'sin correo' });
     }
 
-    const numero = cliente.metadata?.num_socio || await siguienteNumeroSocio();
+    const heredado = cliente.metadata?.num_socio ? null : await numeroHeredado(cliente.email);
+    const numero = cliente.metadata?.num_socio || heredado || await siguienteNumeroSocio();
     const enlace = urlCarnet(cliente.id);
     const qr = await qrPng(enlace);
 
@@ -159,7 +197,8 @@ export default async function handler(req, res) {
       metadata: {
         num_socio: numero,
         nivel,
-        carnet_enviado: new Date().toISOString()
+        carnet_enviado: new Date().toISOString(),
+        procedencia: heredado ? 'migracion-givewp' : 'alta-nueva'
       }
     });
 
