@@ -182,7 +182,7 @@ async function altaRecurrente(evento) {
   const sub = evento.data.object;
   const calculo = nivelDeSuscripcion(sub);
   if (!calculo) return { ignorado: 'producto sin carnet' };
-  const { nivel } = calculo;
+  const { nivel, centimos } = calculo;
 
   const cliente = await stripe.customers.retrieve(sub.customer);
   if (!cliente || cliente.deleted) return { ignorado: 'cliente inexistente' };
@@ -204,6 +204,7 @@ async function altaRecurrente(evento) {
     metadata: {
       num_socio: numero,
       nivel,
+      centimos_mes: String(centimos),
       carnet_hasta: '',
       carnet_enviado: new Date().toISOString(),
       procedencia: heredado ? 'migracion-givewp' : 'alta-nueva'
@@ -279,6 +280,84 @@ async function donativoPuntual(evento) {
   return { enviado: true, numero, meses, hasta: fin.toISOString().slice(0, 10) };
 }
 
+/**
+ * Alguien ha cambiado su aportación desde el portal.
+ *
+ * El portal permite multiplicar la aportación: dos, tres o siete veces lo que
+ * se puso al principio. Como el nivel lo decide el importe, multiplicar puede
+ * convertir a un Poeta de la Justicia en Poeta Guerrero, y eso hay que
+ * reconocerlo en el momento y no dejar que lo descubra por su cuenta.
+ *
+ * Solo se escribe cuando la aportación **sube**. Una bajada se registra en
+ * silencio: nadie quiere recibir un correo que le recuerde que da menos.
+ */
+async function cambioDeAportacion(evento) {
+  const stripe = stripeCliente();
+  const sub = evento.data.object;
+  if (sub.status !== 'active' && sub.status !== 'trialing') {
+    return { ignorado: 'suscripción no activa' };
+  }
+
+  const calculo = nivelDeSuscripcion(sub);
+  if (!calculo) return { ignorado: 'producto sin carnet' };
+
+  const cliente = await stripe.customers.retrieve(sub.customer);
+  if (!cliente || cliente.deleted) return { ignorado: 'cliente inexistente' };
+
+  const previos = parseInt(cliente.metadata?.centimos_mes, 10);
+  const nivelPrevio = cliente.metadata?.nivel;
+  const subida = Number.isFinite(previos) && calculo.centimos > previos;
+  const cambioNivel = nivelPrevio && nivelPrevio !== calculo.nivel;
+
+  if (!subida && !cambioNivel) return { ignorado: 'sin cambios que reconocer' };
+
+  // La ficha se actualiza siempre: el carnet debe decir la verdad aunque no
+  // haya correo de por medio.
+  await stripe.customers.update(cliente.id, {
+    metadata: { nivel: calculo.nivel, centimos_mes: String(calculo.centimos) }
+  });
+
+  if (!subida || !cliente.email) return { actualizado: true, nivel: calculo.nivel };
+
+  const importe = (calculo.centimos / 100).toLocaleString('es-ES', {
+    style: 'currency', currency: 'EUR'
+  });
+  const asciende = cambioNivel && calculo.nivel === 'Poeta Guerrero';
+
+  const transporte = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT || 465),
+    secure: Number(process.env.SMTP_PORT || 465) === 465,
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+  });
+
+  await transporte.sendMail({
+    from: process.env.MAIL_FROM || process.env.SMTP_USER,
+    to: cliente.email,
+    bcc: process.env.MAIL_TO,
+    subject: asciende
+      ? 'Ya eres Poeta Guerrero'
+      : `Gracias: tu aportación pasa a ${importe} al mes`,
+    html: `<div style="font-family:Georgia,'Times New Roman',serif;color:#171717;max-width:560px;margin:0 auto;padding:8px">
+  <p style="font-size:17px;line-height:1.6">${cliente.name ? `Hola, ${cliente.name}` : 'Hola'}:</p>
+  ${asciende
+    ? `<p style="font-size:17px;line-height:1.6">Acabas de subir tu aportación a <strong>${importe} al mes</strong>, y con eso pasas a ser <strong>Poeta Guerrero</strong>.</p>
+  <p style="font-size:17px;line-height:1.6">Tu carnet ya lo dice: no tienes que hacer nada, y con él tienes el 10 % de descuento en los restaurantes del Grupo Pulcinella y la consulta jurídica al 50 % a partir de seis meses.</p>`
+    : `<p style="font-size:17px;line-height:1.6">Acabas de subir tu aportación a <strong>${importe} al mes</strong>. Gracias.</p>
+  <p style="font-size:17px;line-height:1.6">No es un trámite: ese aumento es tiempo de abogado para alguien que no puede pagarlo.</p>`}
+  <p style="text-align:center;margin:28px 0">
+    <a href="${urlCarnet(cliente.id)}" style="background:#124a48;color:#ffffff;text-decoration:none;font-family:Helvetica,Arial,sans-serif;font-weight:bold;font-size:16px;padding:14px 28px;border-radius:999px;display:inline-block">Ver mi carnet</a>
+  </p>
+  <p style="font-size:17px;line-height:1.6">Mario Díez<br><span style="color:#56534d;font-size:15px">Presidente de la Asociación Justicia Poética</span></p>
+</div>`,
+    text: `Tu aportación pasa a ${importe} al mes.`
+      + (asciende ? ' Con eso eres Poeta Guerrero.' : '')
+      + `\n\nTu carnet: ${urlCarnet(cliente.id)}\n\nGracias.\nMario Díez, presidente.`
+  });
+
+  return { avisado: true, nivel: calculo.nivel, importe };
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -305,6 +384,9 @@ export default async function handler(req, res) {
     }
     if (evento.type === 'checkout.session.completed') {
       return res.status(200).json(await donativoPuntual(evento));
+    }
+    if (evento.type === 'customer.subscription.updated') {
+      return res.status(200).json(await cambioDeAportacion(evento));
     }
     return res.status(200).json({ ignorado: evento.type });
   } catch (error) {
