@@ -39,11 +39,13 @@ function cuerpoEnCrudo(req) {
  * que se pueda corromper ni desincronizar, y con el volumen de la Asociación
  * son unas pocas llamadas.
  *
- * El 001 está reservado a Mario Díez, socio fundador.
+ * La numeración arranca en 001: el fundador se da de alta el primero y le
+ * corresponde ese número. Si alguien se adelantara, bastaría con intercambiar
+ * el campo num_socio de las dos fichas en Stripe.
  */
 async function siguienteNumeroSocio() {
   const stripe = stripeCliente();
-  let mayor = 1;
+  let mayor = 0;
   let pagina = await stripe.customers.list({ limit: 100 });
   let vueltas = 0;
 
