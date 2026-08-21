@@ -10,7 +10,7 @@
  * al corriente. Lo justo para acreditar la condición de Poeta.
  */
 
-import { NIVELES, firmaValida, urlCarnet, qrDataUri, paginaCarnet, stripeCliente, SITIO } from '../lib/carnet.js';
+import { firmaValida, urlCarnet, qrDataUri, paginaCarnet, stripeCliente, nivelDeSuscripcion, SITIO } from '../lib/carnet.js';
 
 function respuestaSimple(res, titulo, texto) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -58,9 +58,9 @@ export default async function handler(req, res) {
     let motivo = 'Este carnet no da derecho a las ventajas de Poeta.';
 
     for (const sub of subs.data) {
-      const producto = sub.items?.data?.[0]?.price?.product;
-      const nombreNivel = NIVELES[producto];
-      if (!nombreNivel) continue;
+      const calculo = nivelDeSuscripcion(sub);
+      if (!calculo) continue;
+      const nombreNivel = calculo.nivel;
 
       if (AL_CORRIENTE.has(sub.status)) {
         // Poeta Guerrero manda sobre Poeta de la Justicia si tuviera las dos.

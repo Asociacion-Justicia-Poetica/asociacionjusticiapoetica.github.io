@@ -27,7 +27,7 @@
 
 import crypto from 'node:crypto';
 import nodemailer from 'nodemailer';
-import { NIVELES, urlCarnet, qrPng, stripeCliente } from '../lib/carnet.js';
+import { urlCarnet, qrPng, stripeCliente, nivelDeSuscripcion } from '../lib/carnet.js';
 
 /** Producto del donativo de una sola vez. */
 const PRODUCTO_DONATIVO = 'prod_V6oHqsbvZ3zwL3';
@@ -180,9 +180,9 @@ async function enviarCarnet({ cliente, nivel, numero, hasta, meses, importe }) {
 async function altaRecurrente(evento) {
   const stripe = stripeCliente();
   const sub = evento.data.object;
-  const producto = sub.items?.data?.[0]?.price?.product;
-  const nivel = NIVELES[producto];
-  if (!nivel) return { ignorado: 'producto sin carnet' };
+  const calculo = nivelDeSuscripcion(sub);
+  if (!calculo) return { ignorado: 'producto sin carnet' };
+  const { nivel } = calculo;
 
   const cliente = await stripe.customers.retrieve(sub.customer);
   if (!cliente || cliente.deleted) return { ignorado: 'cliente inexistente' };
