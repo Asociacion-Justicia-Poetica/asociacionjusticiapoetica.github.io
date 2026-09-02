@@ -147,6 +147,7 @@ function correoHtml({ nombre, nivel, numero, enlace, hasta, meses, importe }) {
   <p style="font-size:17px;line-height:1.6">Gracias por formar parte de esta mágica locura.</p>
   <p style="font-size:17px;line-height:1.6">Mario Díez<br><span style="color:#56534d;font-size:15px">Presidente de la Asociación Justicia Poética</span></p>
   <hr style="border:0;border-top:1px solid #ddd8cc;margin:28px 0">
+  <p style="font-size:13px;line-height:1.6;color:#56534d"><strong>¿Has encontrado este correo en spam?</strong> Márcalo como «no es spam» y añade nuestra dirección a tus contactos. Así te llegarán bien el informe trimestral y los avisos de tu carnet.</p>
   <p style="font-size:13px;line-height:1.6;color:#56534d">Puedes gestionar tu aportación desde <a href="https://billing.stripe.com/p/login/7sY7sKh1b9BT4gedaH4Ja00" style="color:#124a48">este enlace</a>.</p>
 </div>`;
 }
