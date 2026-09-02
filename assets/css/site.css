@@ -449,6 +449,12 @@ a.card .more { margin-top: auto; padding-top: .75rem; font-weight: 600; color: v
 .case-state.is-won { background: var(--gold-wash); color: var(--gold-ink); }
 /* Ficha sin descripción: el estado necesita el aire que daba el párrafo. */
 .case > :is(h2, h3) + .case-state { margin-top: .35rem; }
+/* Una causa puede estar en dos situaciones a la vez: condena firme y un
+   juicio pendiente, sentencia dictada y apelación. */
+/* La separación va a la derecha, no a la izquierda: así, cuando la segunda
+   etiqueta baja de línea en un móvil, queda alineada y no sangrada. */
+.case-state { margin-right: .4rem; }
+.case-state + .case-state { margin-top: .35rem; }
 
 /* --- Formularios -------------------------------------------------------- */
 .form { display: grid; gap: 1.5rem; }
