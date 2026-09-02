@@ -92,9 +92,39 @@ async function numeroHeredado(correo) {
  * que se pueda corromper ni desincronizar, y con el volumen de la Asociación
  * son unas pocas llamadas.
  */
+/**
+ * El número más alto reservado a la plataforma antigua.
+ *
+ * Hace falta porque los números heredados llegan más lejos que los ya emitidos:
+ * mientras queden donantes sin migrar, sus números existen en el mapa pero no
+ * en Stripe. Sin esta comprobación, un alta nueva recibiría un número que
+ * pertenece a alguien que todavía no ha dado el paso, y al migrar habría dos
+ * personas con el mismo número.
+ */
+async function mayorNumeroReservado() {
+  try {
+    const stripe = stripeCliente();
+    const producto = await stripe.products.retrieve(PRODUCTO_NUMEROS_HEREDADOS);
+    let mayor = 0;
+    for (const [clave, valor] of Object.entries(producto.metadata || {})) {
+      if (!clave.startsWith('mapa_')) continue;
+      for (const par of String(valor).split(',')) {
+        const n = parseInt(String(par).split(':')[1], 10);
+        if (Number.isFinite(n) && n > mayor) mayor = n;
+      }
+    }
+    return mayor;
+  } catch (error) {
+    // Si esto falla se sigue adelante, pero conviene saberlo: el riesgo es
+    // repetir un número.
+    console.error('No se pudo leer el tope de números heredados:', error && error.message);
+    return 0;
+  }
+}
+
 async function siguienteNumeroSocio() {
   const stripe = stripeCliente();
-  let mayor = 0;
+  let mayor = await mayorNumeroReservado();
   let pagina = await stripe.customers.list({ limit: 100 });
   let vueltas = 0;
 
