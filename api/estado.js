@@ -32,7 +32,7 @@ const OPCIONALES = [
   'ALERTA_MAIL_TO'
 ];
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   const variables = {};
   for (const nombre of [...ESPERADAS, ...OPCIONALES]) {
     const v = process.env[nombre];
@@ -53,27 +53,8 @@ export default async function handler(req, res) {
       ? 'empieza por whsec_, correcto' : 'NO empieza por whsec_, revisa qué se pegó ahí';
   }
 
-  // TEMPORAL: dispara un aviso de prueba para comprobar que el canal llega.
-  // Quitar en cuanto esté verificado: deja que cualquiera provoque una
-  // notificación, aunque el freno de quince minutos limite el ruido.
-  let aviso = 'no disparado (añade ?aviso=1)';
-  if (req.query.aviso) {
-    try {
-      const { avisarDeFallo } = await import('../lib/alerta.js');
-      const canales = await avisarDeFallo(
-        'PRUEBA del canal de avisos',
-        { donde: 'comprobación manual', codigo: 'ninguno' },
-        'Esto es una prueba. No ha fallado nada y no hay nadie esperando.\nSi lees esto, el aviso funciona.'
-      );
-      aviso = canales.length ? `enviado por: ${canales.join(', ')}` : 'ningún canal configurado';
-    } catch (e) {
-      aviso = `FALLA :: ${e && e.message}`;
-    }
-  }
-
   res.setHeader('Cache-Control', 'no-store');
   return res.status(200).json({
-    aviso,
     entorno: process.env.VERCEL_ENV || 'desconocido',
     region: process.env.VERCEL_REGION || 'desconocida',
     variables,
