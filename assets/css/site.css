@@ -59,6 +59,8 @@
   --gold: #c69636;
   --gold-ink: #7d5c13;
   --gold-wash: #f7f0df;
+  --olive-ink: #14514c;
+  --olive-wash: #e8f0ec;
 
   --alert: #8f1d1d;
   --alert-wash: #fbeaea;
@@ -100,6 +102,8 @@
     --gold: #d9a94a;
     --gold-ink: #d9a94a;
     --gold-wash: #2a2214;
+    --olive-ink: #8fcabf;
+    --olive-wash: #1e3a35;
 
     --alert: #f0a1a1;
     --alert-wash: #2c1717;
@@ -443,6 +447,8 @@ a.card .more { margin-top: auto; padding-top: .75rem; font-weight: 600; color: v
   background: var(--olive-wash); color: var(--olive-ink);
 }
 .case-state.is-won { background: var(--gold-wash); color: var(--gold-ink); }
+/* Ficha sin descripción: el estado necesita el aire que daba el párrafo. */
+.case > :is(h2, h3) + .case-state { margin-top: .35rem; }
 
 /* --- Formularios -------------------------------------------------------- */
 .form { display: grid; gap: 1.5rem; }
