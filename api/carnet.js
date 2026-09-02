@@ -36,6 +36,31 @@ export default async function handler(req, res) {
         'Esta dirección no corresponde a ningún carnet. Comprueba el enlace que recibiste por correo.');
     }
 
+    // El manifiesto es distinto para cada Poeta, porque su dirección de arranque
+    // tiene que ser su propio carnet firmado y no una página común. Se sirve por
+    // la misma dirección con un parámetro, así que va detrás de la misma firma.
+    if (req.query.manifiesto) {
+      res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+      res.setHeader('Cache-Control', 'no-store');
+      return res.status(200).send(JSON.stringify({
+        name: 'Carnet de Poeta | Justicia Poética',
+        short_name: 'Mi carnet',
+        description: 'Carnet de Poeta de la Asociación Justicia Poética.',
+        start_url: urlCarnet(idCliente),
+        scope: `${SITIO}/api/carnet`,
+        display: 'standalone',
+        orientation: 'portrait',
+        background_color: '#f2efe9',
+        theme_color: '#124a48',
+        lang: 'es',
+        icons: [
+          { src: `${SITIO}/assets/img/favicon-192.png`, sizes: '192x192', type: 'image/png' },
+          { src: `${SITIO}/assets/img/icono-512.png`, sizes: '512x512', type: 'image/png' },
+          { src: `${SITIO}/assets/img/icono-512.png`, sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+        ]
+      }));
+    }
+
     const stripe = stripeCliente();
     const cliente = await stripe.customers.retrieve(idCliente);
     if (!cliente || cliente.deleted) {
@@ -118,6 +143,7 @@ export default async function handler(req, res) {
     // Sin caché: el sentido de esta página es decir la verdad ahora mismo.
     res.setHeader('Cache-Control', 'no-store, max-age=0');
     return res.status(200).send(paginaCarnet({
+      manifiesto: `${urlCarnet(idCliente)}&manifiesto=1`,
       nombre: cliente.name || cliente.email || 'Poeta',
       nivel,
       numero: cliente.metadata?.num_socio || '—',
