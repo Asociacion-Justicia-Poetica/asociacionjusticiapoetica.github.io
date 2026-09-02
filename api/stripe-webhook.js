@@ -28,6 +28,7 @@
 import crypto from 'node:crypto';
 import nodemailer from 'nodemailer';
 import { urlCarnet, qrPng, stripeCliente, nivelDeSuscripcion } from '../lib/carnet.js';
+import { avisarDeFallo } from '../lib/alerta.js';
 
 /** Producto del donativo de una sola vez. */
 const PRODUCTO_DONATIVO = 'prod_V6oHqsbvZ3zwL3';
@@ -391,6 +392,14 @@ export default async function handler(req, res) {
     return res.status(200).json({ ignorado: evento.type });
   } catch (error) {
     console.error('Fallo al generar un carnet:', error && error.message);
+    // Stripe reintenta, así que un fallo pasajero se arregla solo. Pero si es
+    // el correo el que está roto, el carnet no llega y nadie se entera: por
+    // eso se avisa también aquí. Sin datos del Poeta.
+    await avisarDeFallo('No se ha podido enviar un carnet de Poeta', {
+      donde: '/api/stripe-webhook',
+      codigo: error && error.code,
+      motivo: error && error.message
+    });
     // 500 para que Stripe lo reintente.
     return res.status(500).send('Error al generar el carnet');
   }

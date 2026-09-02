@@ -17,6 +17,7 @@
  */
 
 import nodemailer from 'nodemailer';
+import { avisarDeFallo } from '../lib/alerta.js';
 
 const CAMPOS_OBLIGATORIOS = ['via', 'contacto', 'tipo', 'provincia', 'relato', 'privacidad'];
 
@@ -184,6 +185,16 @@ export default async function handler(req, res) {
     // Solo el motivo del fallo. Nunca el contenido del formulario.
     console.error('Fallo al enviar una solicitud de ayuda:',
       error && error.code, error && error.responseCode, error && error.message);
+
+    // Avisar por un canal que no sea el correo, que es el que acaba de fallar.
+    // Sin datos de la persona: solo que ha ocurrido y por qué.
+    await avisarDeFallo('No se ha podido entregar una solicitud de ayuda', {
+      donde: '/api/solicitud-ayuda',
+      codigo: error && error.code,
+      respuesta: error && error.responseCode,
+      motivo: error && error.message
+    });
+
     return paginaDeError(
       res,
       'No hemos podido recibir tu mensaje',
