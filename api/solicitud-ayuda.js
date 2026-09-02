@@ -52,14 +52,33 @@ function texto(v) {
   return String(v == null ? '' : v).trim();
 }
 
+function escapar(v) {
+  return String(v == null ? '' : v)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 /**
  * Página de error servida por la propia función.
  * Se devuelve HTML en vez de redirigir con un parámetro porque un error tiene
  * que verse siempre, también sin JavaScript. Decirle a alguien que su mensaje
  * ha llegado cuando no ha llegado es el peor fallo posible en esta página.
  */
-function paginaDeError(res, titular, explicacion) {
+function paginaDeError(res, titular, explicacion, relato) {
+  // Si el envío falla, lo que la persona escribió se perdería y tendría que
+  // volver a contarlo entero. Se lo devolvemos para que pueda copiarlo y
+  // mandárnoslo por otra vía. No se guarda en ninguna parte: es el mismo texto
+  // que acaba de mandar, devuelto por la misma conexión y a la misma persona.
+  const recuperado = texto(relato) ? `
+      <div style="margin-top:2rem">
+        <h2 style="font-size:1.15rem">Lo que habías escrito</h2>
+        <p class="small muted">No lo hemos perdido: cópialo de aquí y mándanoslo por WhatsApp o por correo. No hace falta que lo escribas otra vez.</p>
+        <textarea readonly rows="10" style="width:100%" aria-label="El texto que habías escrito">${escapar(relato)}</textarea>
+      </div>` : '';
+
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  // Contiene lo que la persona ha contado: que no quede en ninguna caché.
+  res.setHeader('Cache-Control', 'no-store, max-age=0');
   return res.status(200).send(`<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -81,6 +100,7 @@ function paginaDeError(res, titular, explicacion) {
         <p style="margin-bottom:0">WhatsApp <a href="https://wa.me/34608141625" rel="noopener">608 14 16 25</a><br>
         Correo <a href="mailto:asociacionjusticiapoetica@gmail.com">asociacionjusticiapoetica@gmail.com</a></p>
       </div>
+      ${recuperado}
       <div class="btn-row" style="margin-top:2rem">
         <a class="btn btn-primary" href="/necesito-ayuda.html">Volver al formulario</a>
       </div>
@@ -112,7 +132,8 @@ export default async function handler(req, res) {
     return paginaDeError(
       res,
       'Faltaba algo por rellenar',
-      'No hemos podido dar por recibida tu solicitud porque quedaban campos obligatorios sin completar. Vuelve atrás y revísalos.'
+      'No hemos podido dar por recibida tu solicitud porque quedaban campos obligatorios sin completar. Vuelve atrás y revísalos.',
+      datos.relato
     );
   }
 
@@ -161,11 +182,13 @@ export default async function handler(req, res) {
     return res.redirect(303, '/solicitud-recibida.html');
   } catch (error) {
     // Solo el motivo del fallo. Nunca el contenido del formulario.
-    console.error('Fallo al enviar una solicitud de ayuda:', error && error.message);
+    console.error('Fallo al enviar una solicitud de ayuda:',
+      error && error.code, error && error.responseCode, error && error.message);
     return paginaDeError(
       res,
       'No hemos podido recibir tu mensaje',
-      'Ha fallado algo por nuestra parte, no por la tuya. Tu mensaje no nos ha llegado, así que por favor no des por hecho que lo hemos leído.'
+      'Ha fallado algo por nuestra parte, no por la tuya. Tu mensaje no nos ha llegado, así que por favor no des por hecho que lo hemos leído.',
+      datos.relato
     );
   }
 }
