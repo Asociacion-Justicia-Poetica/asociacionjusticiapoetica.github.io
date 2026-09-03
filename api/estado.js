@@ -32,7 +32,7 @@ const OPCIONALES = [
   'ALERTA_MAIL_TO'
 ];
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   const variables = {};
   for (const nombre of [...ESPERADAS, ...OPCIONALES]) {
     const v = process.env[nombre];
@@ -53,28 +53,8 @@ export default async function handler(req, res) {
       ? 'empieza por whsec_, correcto' : 'NO empieza por whsec_, revisa qué se pegó ahí';
   }
 
-  // TEMPORAL: por qué el servidor de correo rechaza la conexión. Quitar después.
-  let correo = 'no comprobado (añade ?correo=1)';
-  if (req.query.correo) {
-    try {
-      const { default: nodemailer } = await import('nodemailer');
-      const puerto = Number(process.env.SMTP_PORT || 465);
-      const transporte = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: puerto,
-        secure: puerto === 465,
-        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
-      });
-      await transporte.verify();
-      correo = 'el servidor acepta las credenciales';
-    } catch (e) {
-      correo = `FALLA — code=${e && e.code} command=${e && e.command} responseCode=${e && e.responseCode} :: ${e && e.message}`;
-    }
-  }
-
   res.setHeader('Cache-Control', 'no-store');
   return res.status(200).json({
-    correo,
     entorno: process.env.VERCEL_ENV || 'desconocido',
     region: process.env.VERCEL_REGION || 'desconocida',
     variables,
