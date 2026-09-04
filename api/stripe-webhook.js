@@ -343,13 +343,16 @@ async function cambioDeAportacion(evento) {
 
   if (!subida && !cambioNivel) return { ignorado: 'sin cambios que reconocer' };
 
-  // La ficha se actualiza siempre: el carnet debe decir la verdad aunque no
-  // haya correo de por medio.
-  await stripe.customers.update(cliente.id, {
+  const fichaAlDia = () => stripe.customers.update(cliente.id, {
     metadata: { nivel: calculo.nivel, centimos_mes: String(calculo.centimos) }
   });
 
-  if (!subida || !cliente.email) return { actualizado: true, nivel: calculo.nivel };
+  // Sin correo de por medio, se actualiza y ya está: el carnet debe decir la
+  // verdad aunque nadie reciba nada.
+  if (!subida || !cliente.email) {
+    await fichaAlDia();
+    return { actualizado: true, nivel: calculo.nivel };
+  }
 
   const importe = (calculo.centimos / 100).toLocaleString('es-ES', {
     style: 'currency', currency: 'EUR'
@@ -386,6 +389,14 @@ async function cambioDeAportacion(evento) {
       + (asciende ? ' Con eso eres Poeta Guerrero.' : '')
       + `\n\nTu carnet: ${urlCarnet(cliente.id)}\n\nGracias.\nMario Díez, presidente.`
   });
+
+  // La ficha se actualiza DESPUÉS de enviar, por el mismo motivo que la marca
+  // del carnet en el alta: si el correo falla, el cliente conserva su importe
+  // anterior en metadata, el reintento de Stripe vuelve a ver una subida y lo
+  // vuelve a intentar. Al revés, el agradecimiento se perdería en silencio: al
+  // comparar el importe nuevo consigo mismo, la función concluye que no hay
+  // cambio que reconocer y se va sin escribir.
+  await fichaAlDia();
 
   return { avisado: true, nivel: calculo.nivel, importe };
 }
