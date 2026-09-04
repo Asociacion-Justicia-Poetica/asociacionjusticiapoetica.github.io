@@ -401,6 +401,56 @@ async function cambioDeAportacion(evento) {
   return { avisado: true, nivel: calculo.nivel, importe };
 }
 
+/**
+ * Un intento de aportar que se quedó por el camino.
+ *
+ * Nació de una tarde concreta: el 4 de septiembre de 2026 fallaron ocho pagos
+ * en un día. Una donante nueva lo intentó cuatro veces seguidas y llegó a
+ * subir el importe de 30 a 40 euros; una Poeta que venía a migrar se topó con
+ * la autenticación de su banco. Nadie se enteró de nada. El webhook solo
+ * actuaba cuando un alta salía bien, y cuando salía mal la persona
+ * desaparecía sin dejar rastro que nadie fuera a mirar.
+ *
+ * Dos precisiones sobre qué se avisa y qué no:
+ *
+ *   - De `payment_intent.payment_failed` se avisa siempre: alguien puso su
+ *     tarjeta y el cobro no salió.
+ *   - De `checkout.session.expired`, solo si la sesión llegó a tener un
+ *     intento de pago. Abrir la pasarela y cerrarla es pensárselo, y de eso
+ *     no hay que avisar a nadie.
+ *
+ * Como el resto de avisos, **no viaja ningún dato de quien lo intentó**. Con
+ * saber que hay que mirar en Stripe basta.
+ */
+async function pagoFallido(evento) {
+  const objeto = evento.data.object;
+
+  if (evento.type === 'checkout.session.expired' && !objeto.payment_intent) {
+    return { ignorado: 'sesión abandonada sin intentar pagar' };
+  }
+
+  const fallo = objeto.last_payment_error || {};
+  const centimos = objeto.amount ?? objeto.amount_total;
+  const importe = Number.isFinite(centimos)
+    ? (centimos / 100).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })
+    : null;
+
+  await avisarDeFallo('Un pago no ha llegado a completarse', {
+    donde: '/api/stripe-webhook',
+    evento: evento.type,
+    importe,
+    codigo: fallo.code || fallo.decline_code
+  }, [
+    'Alguien ha intentado aportar y el pago se ha quedado a medias.',
+    'No se le ha cobrado nada, y si nadie mira, se pierde sin más.',
+    'Búscalo en Stripe → Pagos y escríbele para que lo reintente.',
+    '',
+    'Este aviso no dice quién es, a propósito.'
+  ].join('\n'), 'pago-fallido');
+
+  return { avisado: 'pago fallido', importe };
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -430,6 +480,10 @@ export default async function handler(req, res) {
     }
     if (evento.type === 'customer.subscription.updated') {
       return res.status(200).json(await cambioDeAportacion(evento));
+    }
+    if (evento.type === 'payment_intent.payment_failed'
+        || evento.type === 'checkout.session.expired') {
+      return res.status(200).json(await pagoFallido(evento));
     }
     return res.status(200).json({ ignorado: evento.type });
   } catch (error) {
