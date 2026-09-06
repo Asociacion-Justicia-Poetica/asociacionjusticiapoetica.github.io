@@ -209,6 +209,56 @@ async function enviarCarnet({ cliente, nivel, numero, hasta, meses, importe }) {
 }
 
 /** Alta recurrente: Poeta de la Justicia o Poeta Guerrero, sin caducidad. */
+/**
+ * Dos altas de la misma persona.
+ *
+ * Nació de un caso real: la madrugada del 6 de septiembre de 2026, un donante
+ * se dio de alta dos veces con **81 segundos de diferencia**, quedándose con
+ * dos carnets y pagando 20 euros al mes en dos recibos. Casi seguro creyó que
+ * la primera vez no había funcionado. Nadie se enteró hasta el día siguiente.
+ *
+ * Esto **avisa, no impide**. Que alguien tenga dos aportaciones puede ser un
+ * error o puede ser deliberado, y eso no se decide desde aquí: se le pregunta.
+ * Por eso el alta se completa entera y con su carnet, pase lo que pase.
+ *
+ * Del aviso viajan los **números de socio**, no el nombre ni el correo: son
+ * referencias internas que bastan para ir a mirarlo a Stripe.
+ *
+ * Solo caza duplicados que compartan correo. Quien repite desde otra dirección
+ * se escapa, y no hay forma barata de evitarlo: pasó con la socia 106.
+ */
+async function avisarSiAltaDuplicada(cliente, numero) {
+  if (!cliente.email) return;
+  const stripe = stripeCliente();
+  const mismas = await stripe.customers.list({ email: cliente.email, limit: 100 });
+
+  const gemelas = mismas.data.filter((c) => (
+    c.id !== cliente.id
+    && c.metadata?.num_socio
+    && c.metadata.num_socio !== numero
+    && c.metadata?.centimos_mes
+  ));
+  if (!gemelas.length) return;
+
+  const previa = gemelas.sort((a, b) => b.created - a.created)[0];
+  const minutos = Math.round(Math.abs(cliente.created - previa.created) / 60);
+
+  await avisarDeFallo('Puede que alguien se haya dado de alta dos veces', {
+    donde: '/api/stripe-webhook',
+    socios: `${previa.metadata.num_socio} y ${numero}`,
+    separacion: minutos < 60 ? `${minutos} min` : `${Math.round(minutos / 60)} h`,
+    fichas: gemelas.length + 1
+  }, [
+    'Este correo ya tenía carnet y acaba de sacar otro.',
+    'Si fue un error, está pagando dos veces sin querer.',
+    '',
+    'Búscalo en Stripe por esos números y pregúntale antes de tocar nada:',
+    'puede ser un fallo o puede que quiera aportar el doble.',
+    '',
+    'Este aviso no dice quién es, a propósito.'
+  ].join('\n'), 'alta-duplicada');
+}
+
 async function altaRecurrente(evento) {
   const stripe = stripeCliente();
   const sub = evento.data.object;
@@ -242,6 +292,15 @@ async function altaRecurrente(evento) {
       procedencia: heredado ? 'migracion-givewp' : 'alta-nueva'
     }
   });
+
+  // Se comprueba al final y sin poder romper nada: el carnet ya salió y la
+  // ficha ya está marcada. Un aviso perdido es molesto; un alta a medias, no.
+  try {
+    await avisarSiAltaDuplicada(cliente, numero);
+  } catch (error) {
+    console.error('No se pudo comprobar si el alta venía duplicada:', error && error.message);
+  }
+
   return { enviado: true, numero, nivel };
 }
 
