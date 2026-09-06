@@ -411,26 +411,29 @@ async function cambioDeAportacion(evento) {
  * actuaba cuando un alta salía bien, y cuando salía mal la persona
  * desaparecía sin dejar rastro que nadie fuera a mirar.
  *
- * Dos precisiones sobre qué se avisa y qué no:
+ * Solo se avisa de `payment_intent.payment_failed`: alguien puso su tarjeta y
+ * el cobro no salió, y eso se sabe en el momento.
  *
- *   - De `payment_intent.payment_failed` se avisa siempre: alguien puso su
- *     tarjeta y el cobro no salió.
- *   - De `checkout.session.expired`, solo si la sesión llegó a tener un
- *     intento de pago. Abrir la pasarela y cerrarla es pensárselo, y de eso
- *     no hay que avisar a nadie.
+ * **De `checkout.session.expired` ya no se avisa, y se quitó el 5 de septiembre
+ * de 2026 tras un día entero de falsos positivos.** Una sesión caduca 24 horas
+ * después de abrirse, así que el aviso llegaba siempre tarde, cuando ya no se
+ * podía hacer nada; y sobre todo no sabía si la persona había acabado entrando
+ * por otra vía. Ese día saltó dos veces por sesiones de una donante que ya era
+ * la socia 106 desde nueve horas antes: acertó cero de dos. Comprobar el correo
+ * antes de avisar tampoco lo habría salvado, porque ella se dio de alta desde
+ * una dirección distinta de la de sus intentos fallidos.
+ *
+ * Si alguna vez se quiere recuperar la idea, el sitio no es este: hay que mirar
+ * sesiones abiertas sin completar mientras siguen vivas, no esperar al evento
+ * de caducidad.
  *
  * Como el resto de avisos, **no viaja ningún dato de quien lo intentó**. Con
  * saber que hay que mirar en Stripe basta.
  */
 async function pagoFallido(evento) {
   const objeto = evento.data.object;
-
-  if (evento.type === 'checkout.session.expired' && !objeto.payment_intent) {
-    return { ignorado: 'sesión abandonada sin intentar pagar' };
-  }
-
   const fallo = objeto.last_payment_error || {};
-  const centimos = objeto.amount ?? objeto.amount_total;
+  const centimos = objeto.amount;
   const importe = Number.isFinite(centimos)
     ? (centimos / 100).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })
     : null;
@@ -481,8 +484,7 @@ export default async function handler(req, res) {
     if (evento.type === 'customer.subscription.updated') {
       return res.status(200).json(await cambioDeAportacion(evento));
     }
-    if (evento.type === 'payment_intent.payment_failed'
-        || evento.type === 'checkout.session.expired') {
+    if (evento.type === 'payment_intent.payment_failed') {
       return res.status(200).json(await pagoFallido(evento));
     }
     return res.status(200).json({ ignorado: evento.type });
