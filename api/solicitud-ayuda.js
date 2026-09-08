@@ -30,6 +30,7 @@ const ETIQUETAS = {
   provincia: 'Provincia',
   menor: 'La persona afectada es menor de edad',
   procedimiento: 'Ya hay procedimiento judicial abierto',
+  procedimiento_ref: 'Procedimiento y juzgado',
   tercero: 'Escribe en nombre de otra persona',
   relato: 'Relato'
 };
@@ -151,6 +152,7 @@ export default async function handler(req, res) {
   cuerpo += linea('provincia', texto(datos.provincia));
   if (texto(datos.menor)) cuerpo += 'AFECTA A UNA PERSONA MENOR DE EDAD\n';
   if (texto(datos.procedimiento)) cuerpo += 'Ya hay denuncia o procedimiento judicial abierto\n';
+  cuerpo += linea('procedimiento_ref', texto(datos.procedimiento_ref));
   if (texto(datos.tercero)) cuerpo += 'Escribe en nombre de otra persona\n';
   cuerpo += '\n' + '-'.repeat(62) + '\n\n';
   cuerpo += texto(datos.relato) + '\n\n';

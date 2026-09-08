@@ -89,7 +89,7 @@
   <section>
     <div class="wrap wrap-narrow">
       <h2>Escríbenos</h2>
-      <p class="muted">Solo te pedimos lo imprescindible para poder llamarte. Los campos marcados con <span class="req">*</span> son obligatorios.</p>
+      <p class="muted">Solo te pedimos lo imprescindible para poder responderte. Los campos marcados con <span class="req">*</span> son obligatorios.</p>
 
       <!-- El destino es la función en api/solicitud-ayuda.js, que se ejecuta
            en Fráncfort y solo convierte el formulario en un correo. No guarda
@@ -190,6 +190,13 @@
           </div>
 
           <div class="field" style="margin-top:1.25rem">
+            <label for="procedimiento_ref">Si ya hay procedimiento, ¿sabes su número y el juzgado?</label>
+            <input type="text" id="procedimiento_ref" name="procedimiento_ref" autocomplete="off"
+                   placeholder="Por ejemplo: Diligencias Previas 1411/2025, Instrucción 3 de Vitoria-Gasteiz">
+            <p class="help">Solo si lo tienes a mano. Suele venir en la primera página de cualquier resolución, o te lo puede decir tu abogado. Si no lo sabes, o si todavía no hay procedimiento, deja el campo vacío: no es imprescindible.</p>
+          </div>
+
+          <div class="field" style="margin-top:1.25rem">
             <label for="relato">Cuéntanos lo que puedas <span class="req">*</span></label>
             <textarea id="relato" name="relato" required aria-describedby="ayuda-relato"></textarea>
             <p class="help" id="ayuda-relato">Con lo básico basta: qué pasó, cuándo y en qué punto está. No hace falta que entres en detalles que te cuesten. Ya habrá tiempo.</p>
@@ -220,7 +227,7 @@
   <section class="tight" style="background:var(--surface);border-block:1px solid var(--line)">
     <div class="wrap wrap-narrow">
       <h2>Si prefieres no rellenar un formulario</h2>
-      <p>Estos canales los atiende la Asociación. El número es solo de WhatsApp, no de llamadas: escríbenos y, si hace falta hablar, te llamamos nosotros a la hora que nos digas.</p>
+      <p>Estos canales los atiende la Asociación. El número es solo de WhatsApp, no de llamadas. Escríbenos y te contestamos por escrito; <strong>si asumimos tu caso, a partir de ahí hablamos por teléfono las veces que haga falta</strong>, a la hora que nos digas.</p>
       <div class="docs" style="margin-top:1.5rem">
         <a class="doc" href="https://wa.me/34608141625" rel="noopener">608 14 16 25 <em>WhatsApp</em></a>
         <a class="doc" href="mailto:info@justiciapoetica.org">info@justiciapoetica.org <em>Correo</em></a>
