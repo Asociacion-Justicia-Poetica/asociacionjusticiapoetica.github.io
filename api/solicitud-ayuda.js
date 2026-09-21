@@ -182,6 +182,31 @@ export default async function handler(req, res) {
       replyTo: texto(datos.contacto).includes('@') ? texto(datos.contacto) : undefined
     });
 
+    // El correo ha salido. Ahora, avisar al móvil de que hay alguien esperando.
+    //
+    // Nació de una solicitud que estuvo trece días sin respuesta en el buzón,
+    // con un plazo comprometido de 72 horas: el aviso solo sonaba cuando el
+    // envío fallaba, y un envío que sale bien no hacía ruido. Va lo mínimo
+    // para saber que hay que mirar el buzón: la categoría y si afecta a una
+    // persona menor. Ni nombre, ni contacto, ni provincia, ni relato.
+    //
+    // Va después del correo y nunca lo condiciona: si el aviso falla, la
+    // persona ya tiene su confirmación y el mensaje ya está en el buzón.
+    try {
+      await avisarDeFallo('Ha llegado una solicitud de ayuda', {
+        categoria: TIPOS[texto(datos.tipo)] || 'sin clasificar',
+        ...(texto(datos.menor) ? { atencion: 'AFECTA A UNA PERSONA MENOR DE EDAD' } : {}),
+        ...(texto(datos.procedimiento) ? { procedimiento: 'ya hay uno abierto' } : {})
+      }, [
+        'Está en el buzón de info@justiciapoetica.org.',
+        'Plazo comprometido con quien escribe: 72 horas laborables.',
+        '',
+        'Si en un cuarto de hora entra otra, no volverá a sonar: mira el buzón, no cuentes avisos.'
+      ].join('\n'), 'solicitud-recibida');
+    } catch (e) {
+      console.error('No se pudo avisar de la solicitud recibida:', e && e.message);
+    }
+
     return res.redirect(303, '/solicitud-recibida.html');
   } catch (error) {
     // Solo el motivo del fallo. Nunca el contenido del formulario.
