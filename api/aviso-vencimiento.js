@@ -107,6 +107,7 @@ export default async function handler(req, res) {
             from: process.env.MAIL_FROM || process.env.SMTP_USER,
             to: cliente.email,
             bcc: process.env.MAIL_TO,
+            replyTo: process.env.MAIL_REPLY_TO,
             subject: vencido
               ? 'Tu carnet de Poeta Guerrero ha vencido'
               : `Tu carnet de Poeta Guerrero vence el ${enEspanol(vence)}`,

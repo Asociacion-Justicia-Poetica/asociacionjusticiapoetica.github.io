@@ -197,6 +197,7 @@ async function enviarCarnet({ cliente, nivel, numero, hasta, meses, importe }) {
     from: process.env.MAIL_FROM || process.env.SMTP_USER,
     to: cliente.email,
     bcc: process.env.MAIL_TO,
+    replyTo: process.env.MAIL_REPLY_TO,
     subject: hasta
       ? `Tu carnet de ${nivel}, vigente hasta el ${hasta}`
       : `Tu carnet de ${nivel}, socio n.º ${numero}`,
@@ -429,6 +430,7 @@ async function cambioDeAportacion(evento) {
     from: process.env.MAIL_FROM || process.env.SMTP_USER,
     to: cliente.email,
     bcc: process.env.MAIL_TO,
+    replyTo: process.env.MAIL_REPLY_TO,
     subject: asciende
       ? 'Ya eres Poeta Guerrero'
       : `Gracias: tu aportación pasa a ${importe} al mes`,
