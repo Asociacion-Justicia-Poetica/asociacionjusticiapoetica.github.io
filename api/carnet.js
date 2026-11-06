@@ -81,6 +81,9 @@ export default async function handler(req, res) {
     let activo = false;
     let hasta = null;
     let motivo = 'Este carnet no da derecho a las ventajas de Poeta.';
+    // `motivo` solo se pinta cuando el carnet NO vale. Un recibo pendiente deja
+    // el carnet válido, así que su aviso necesita camino propio o se pierde.
+    let aviso = null;
 
     for (const sub of subs.data) {
       const calculo = nivelDeSuscripcion(sub);
@@ -91,7 +94,7 @@ export default async function handler(req, res) {
         // Poeta Guerrero manda sobre Poeta de la Justicia si tuviera las dos.
         if (!activo || nombreNivel === 'Poeta Guerrero') nivel = nombreNivel;
         activo = true;
-        if (sub.status === 'past_due') motivo = 'Hay un recibo pendiente de cobro.';
+        if (sub.status === 'past_due') aviso = 'Hay un recibo pendiente de cobro.';
 
         // Quien cancela desde el portal conserva el carnet hasta el último día
         // que ya pagó: la suscripción sigue activa y solo queda marcada para no
@@ -150,7 +153,8 @@ export default async function handler(req, res) {
       qr,
       activo,
       hasta,
-      motivo
+      motivo,
+      aviso
     }));
   } catch (error) {
     console.error('Error al mostrar un carnet:', error && error.message);
