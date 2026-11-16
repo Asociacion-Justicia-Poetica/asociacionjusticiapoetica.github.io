@@ -23,8 +23,8 @@ const CAMPOS_OBLIGATORIOS = ['via', 'contacto', 'tipo', 'provincia', 'relato', '
 
 const ETIQUETAS = {
   via: 'Vía de contacto preferida',
-  contacto: 'Teléfono o correo',
-  franja: 'Cuándo es seguro llamar',
+  contacto: 'WhatsApp o correo',
+  franja: 'Cuándo es seguro contactar',
   nombre: 'Nombre',
   tipo: 'Tipo de situación',
   provincia: 'Provincia',
@@ -47,7 +47,13 @@ const TIPOS = {
 const FRANJAS = {
   'manana': 'Por la mañana',
   'tarde': 'Por la tarde',
-  'solo-mensaje': 'Prefiere que no le llamen, mejor escribir'
+  'solo-mensaje': 'NO LLAMAR NUNCA. Solo mensajes'
+};
+
+const VIAS = {
+  'whatsapp': 'Por WhatsApp',
+  'email': 'Por correo electrónico',
+  'telefono': 'Pidió teléfono (opción retirada del formulario)'
 };
 
 function texto(v) {
@@ -144,7 +150,7 @@ export default async function handler(req, res) {
   let cuerpo = 'Nueva solicitud de ayuda recibida desde justiciapoetica.org\n';
   cuerpo += '='.repeat(62) + '\n\n';
   cuerpo += linea('nombre', texto(datos.nombre) || 'No lo ha indicado');
-  cuerpo += linea('via', texto(datos.via));
+  cuerpo += linea('via', VIAS[texto(datos.via)] || texto(datos.via));
   cuerpo += linea('contacto', texto(datos.contacto));
   cuerpo += linea('franja', FRANJAS[texto(datos.franja)] || 'Cualquier momento');
   cuerpo += '\n';

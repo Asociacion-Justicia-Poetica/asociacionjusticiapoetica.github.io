@@ -110,11 +110,7 @@
 
           <div class="choice">
             <label>
-              <input type="radio" name="via" value="telefono" required>
-              <span>Por teléfono</span>
-            </label>
-            <label>
-              <input type="radio" name="via" value="whatsapp">
+              <input type="radio" name="via" value="whatsapp" required>
               <span>Por WhatsApp</span>
             </label>
             <label>
@@ -123,9 +119,10 @@
             </label>
           </div>
           <p class="field-error" data-error-for="via"></p>
+          <p class="help">La primera respuesta es siempre por escrito. Si asumimos tu caso, a partir de ahí hablamos por teléfono las veces que haga falta.</p>
 
           <div class="field" style="margin-top:1.25rem">
-            <label for="contacto">Teléfono o correo donde localizarte <span class="req">*</span></label>
+            <label for="contacto">Número de WhatsApp o correo donde localizarte <span class="req">*</span></label>
             <input type="text" id="contacto" name="contacto" required autocomplete="off"
                    aria-describedby="ayuda-contacto">
             <p class="help" id="ayuda-contacto">Si prefieres no dar tus datos, escribe los de una persona de confianza y dinos quién es en el relato.</p>
@@ -133,14 +130,14 @@
           </div>
 
           <div class="field" style="margin-top:1.25rem">
-            <label for="franja">Cuándo es seguro llamarte</label>
+            <label for="franja">Cuándo es seguro contactarte</label>
             <select id="franja" name="franja">
               <option value="">Cualquier momento</option>
               <option value="manana">Por la mañana</option>
               <option value="tarde">Por la tarde</option>
-              <option value="solo-mensaje">Prefiero que no me llaméis, escribidme</option>
+              <option value="solo-mensaje">Nunca me llaméis, solo mensajes</option>
             </select>
-            <p class="help">Si vives con la persona de la que te quieres proteger, esto importa.</p>
+            <p class="help">Si vives con la persona de la que te quieres proteger, esto importa: un mensaje a la hora equivocada también se ve.</p>
           </div>
 
           <div class="field" style="margin-top:1.25rem">
